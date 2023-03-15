@@ -1,0 +1,76 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+
+* {
+    -fx-font-family: Tahoma;
+}
+
+/*Login*/
+.vb-login {
+    -fx-padding: 20;
+}
+.vb-login Button {
+    -fx-font-size: 16;
+    -fx-padding:  10 20 10 20;
+}
+.vb-login GridPane {
+    -fx-font-size: 16;
+}
+.vb-login-title {
+    -fx-font-size: 30;
+    
+}
+
+/*End Login*/
+
+/*Main*/
+.hb-main-body {
+    -fx-background-color: #7EE6DE;
+}
+.vb-sidebar {
+    -fx-background-color: #4FC8DA;
+}
+.vb-title Label{
+    -fx-padding: 10;
+    -fx-background-color: #4A87E2;
+    -fx-text-fill: #fff;
+}
+.vb-sidebar .btn-select {
+    -fx-background-color: #3A6AD0;
+    -fx-text-fill: #fff;
+    -fx-padding: 10 20 10 20;
+}
+/*End Main*/
+
+HBox.body {
+    -fx-padding: 10;
+    -fx-spacing: 10;
+}
+
+Button.btn-select {
+    -fx-padding: 8;
+}
+
+GridPane.gp-input {
+    -fx-: 10;
+    -fx-font-size: 16;
+
+}
+GridPane.gp-input Text,
+GridPane.gp-input TextField{
+    -fx-font-size: 14
+}
+
+HBox{
+    -fx-spacing: 10;
+}
+
+HBox.hb-select {
+    -fx-padding: 10 0 10 0;
+    -fx-alignment: CENTER;
+}
+.mainFxmlClass {
+    
+}
