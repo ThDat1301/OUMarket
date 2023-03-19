@@ -32,6 +32,7 @@ public class EmployeeService {
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 int branchId = rs.getInt("branch_id");
+                
                 employees.add(new Employee(id, name, phone, username, password, branchId));
             }   
         }

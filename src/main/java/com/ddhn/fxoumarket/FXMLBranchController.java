@@ -70,7 +70,6 @@ public class FXMLBranchController implements Initializable {
         boolean b = txtAddress.getText().trim().isEmpty();
         if (txtName.getText().trim().isEmpty() || txtAddress.getText().trim().isEmpty()) {
             MessageBox.getBox("Error", "Please complete all fields before insert!!!", Alert.AlertType.ERROR).show();
-
         } else {
             try (Connection conn = JdbcUtils.getConn()) {
                 String name, address;

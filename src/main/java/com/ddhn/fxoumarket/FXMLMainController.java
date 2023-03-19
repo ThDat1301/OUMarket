@@ -18,6 +18,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -32,11 +34,11 @@ public class FXMLMainController implements Initializable {
     @FXML private Label lbBranchName;
     @FXML private Label lbUsername;
     @FXML private VBox vbScreen;
-
-    @FXML private Button btnProduct;
-    @FXML private Button btnPurchase;
+    @FXML private ToggleButton btnProduct;
+    @FXML private ToggleButton btnPurchase;
     @FXML private HBox branchScreen;
     @FXML private HBox employeeScreen;
+    @FXML private HBox productScreen;
     /**
      * Initializes the controller class.
      */
@@ -69,12 +71,25 @@ public class FXMLMainController implements Initializable {
         employeeScreen.setVisible(true);
         employeeScreen.setManaged(true);
         branchScreen.setVisible(false);
-        branchScreen.setManaged(false);      
+        branchScreen.setManaged(false);
+        productScreen.setVisible(false);
+        productScreen.setManaged(false);
     }
 
     public void showBranch(ActionEvent e) {
         branchScreen.setVisible(true);
         branchScreen.setManaged(true);      
+        employeeScreen.setVisible(false);
+        employeeScreen.setManaged(false);
+        productScreen.setVisible(false);
+        productScreen.setManaged(false);
+    }
+    
+    public void showProduct(ActionEvent e) {
+        productScreen.setVisible(true);
+        productScreen.setManaged(true);
+        branchScreen.setVisible(false);
+        branchScreen.setManaged(false);      
         employeeScreen.setVisible(false);
         employeeScreen.setManaged(false);
     }
