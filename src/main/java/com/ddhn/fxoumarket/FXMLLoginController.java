@@ -4,6 +4,8 @@
  */
 package com.ddhn.fxoumarket;
 
+import com.ddhn.pojo.Employee;
+import com.ddhn.services.EmployeeService;
 import com.ddhn.services.LoginService;
 import java.io.IOException;
 import java.net.URL;
@@ -30,11 +32,14 @@ import javafx.scene.control.TextField;
 public class FXMLLoginController implements Initializable {
     @FXML private TextField txtUsername;
     @FXML private TextField txtPassword;
+    
+    public static int currentEmployeeId;
     public void loginHandler(ActionEvent e) throws SQLException, IOException {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
        
         if (LoginService.Login(username, password) == 1) {
+            currentEmployeeId = EmployeeService.getIdByName(username);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLMain.fxml"));
             Parent root = loader.load();
             String branch = LoginService.getBranchByUsername(username);

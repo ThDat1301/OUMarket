@@ -71,7 +71,7 @@
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </ToggleButton>
-                  <ToggleButton fx:id="btnPurchase" alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="31.0" prefWidth="182.0" styleClass="btn-select" text="Purchase" textAlignment="CENTER" toggleGroup="$tgSelect">
+                  <ToggleButton fx:id="btnPurchase" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#showPurchase" prefHeight="31.0" prefWidth="182.0" styleClass="btn-select" text="Purchase" textAlignment="CENTER" toggleGroup="$tgSelect">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -103,6 +103,8 @@
         <fx:include fx:id="branchScreen" source="FXMLBranch.fxml" />
         <fx:include fx:id="employeeScreen" managed="false" source="FXMLEmployee.fxml" visible="false" />
         <fx:include fx:id="productScreen" managed="false" source="FXMLProduct.fxml" visible="false" />
+        <fx:include fx:id="purchaseScreen" managed="false" source="FXMLPurchase.fxml" visible="false" />
+
 
       </VBox>
    </children>

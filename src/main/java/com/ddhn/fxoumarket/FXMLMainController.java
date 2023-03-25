@@ -8,6 +8,8 @@ import com.ddhn.services.LoginService;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,13 +41,14 @@ public class FXMLMainController implements Initializable {
     @FXML private HBox branchScreen;
     @FXML private HBox employeeScreen;
     @FXML private HBox productScreen;
+    @FXML private HBox purchaseScreen;
     /**
      * Initializes the controller class.
      */
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
     
     public void showInformation(String username, String branch) {
@@ -74,6 +77,9 @@ public class FXMLMainController implements Initializable {
         branchScreen.setManaged(false);
         productScreen.setVisible(false);
         productScreen.setManaged(false);
+        purchaseScreen.setVisible(false);
+        purchaseScreen.setManaged(false);
+        
     }
 
     public void showBranch(ActionEvent e) {
@@ -83,11 +89,26 @@ public class FXMLMainController implements Initializable {
         employeeScreen.setManaged(false);
         productScreen.setVisible(false);
         productScreen.setManaged(false);
+        purchaseScreen.setVisible(false);
+        purchaseScreen.setManaged(false);
     }
     
     public void showProduct(ActionEvent e) {
         productScreen.setVisible(true);
         productScreen.setManaged(true);
+        branchScreen.setVisible(false);
+        branchScreen.setManaged(false);      
+        employeeScreen.setVisible(false);
+        employeeScreen.setManaged(false);
+        purchaseScreen.setVisible(false);
+        purchaseScreen.setManaged(false);
+    }
+    
+    public void showPurchase(ActionEvent e) {
+        purchaseScreen.setVisible(true);
+        purchaseScreen.setManaged(true);
+        productScreen.setVisible(false);
+        productScreen.setManaged(false);
         branchScreen.setVisible(false);
         branchScreen.setManaged(false);      
         employeeScreen.setVisible(false);

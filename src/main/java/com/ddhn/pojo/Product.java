@@ -33,6 +33,9 @@ public class Product {
         this.active = active;
     }
 
+    public Product() {
+    }
+
     /**
      * @return the id
      */
@@ -109,6 +112,12 @@ public class Product {
     public void setActive(boolean active) {
         this.active = active;
     }
+    
+    @Override
+    public String toString() {
+        return String.valueOf(this.id);
+    }
+   
     
     
     

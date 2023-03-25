@@ -81,4 +81,30 @@ public class ProductService {
             return r > 0;
         }
     }
+    
+    public static Product getProductById(int productId) throws SQLException {
+        int id = 0;
+        String name = null, origin = null;
+        float price = 0, discountPrice = 0;
+        boolean active = false;
+        try (Connection conn = JdbcUtils.getConn()) {
+            
+            String sql = "SELECT * FROM product WHERE id = ?";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setInt(1, productId);
+            ResultSet rs = stm.executeQuery();
+         
+            while(rs.next()) {
+                id = rs.getInt("id");
+                name = rs.getString("name");
+                origin = rs.getString("origin");
+                price = rs.getFloat("price");
+                discountPrice = rs.getFloat("discountPrice");
+                active = rs.getBoolean("active");
+            }
+            return new Product(id, name, origin, price, discountPrice, active);
+
+           
+        }
+    }
 }

@@ -79,4 +79,18 @@ public class EmployeeService {
             return r > 0;
         }
     }
+    
+    public static int getIdByName(String username) throws SQLException {
+        int id = 0;
+        try (Connection conn = JdbcUtils.getConn()) {
+            String sql = "SELECT * FROM employee WHERE username = ?";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1, username);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+        return id;
+        }
+    }
 }
