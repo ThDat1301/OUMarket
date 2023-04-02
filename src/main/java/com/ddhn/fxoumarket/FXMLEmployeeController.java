@@ -76,73 +76,40 @@ public class FXMLEmployeeController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        renewTable();
         try {
-            loadBranch();
+            renewTable();
         } catch (SQLException ex) {
             Logger.getLogger(FXMLEmployeeController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void loadBranch() throws SQLException {
+    public void renewTable() throws SQLException {
+        this.employeeTable.getItems().clear();
+        this.employeeTable.getColumns().clear();
+        idCol = new TableColumn("ID");
+        nameCol = new TableColumn("Name");
+        phoneCol = new TableColumn("Phone");
+        usernameCol = new TableColumn("Username");
+        passwordCol = new TableColumn("Password");
+        branchIdCol = new TableColumn("Branch ID");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        usernameCol.setCellValueFactory(new PropertyValueFactory<>("username"));
+        passwordCol.setCellValueFactory(new PropertyValueFactory<>("password"));
+        branchIdCol.setCellValueFactory(new PropertyValueFactory<>("branch_id"));
+
+        this.employeeTable.getColumns().addAll(idCol,nameCol,phoneCol,usernameCol,passwordCol,branchIdCol);        
+        List<Employee> employee = EmployeeService.getEmployees();        
+        this.employeeTable.setItems(FXCollections.observableArrayList(employee));
+        
         List<Branch> branchList = BranchService.getBranchs();
         cbBranch.setItems(FXCollections.observableList(branchList));
     }
-
-    public void renewTable() {
-        idCol.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("id"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<Employee, String>("name"));
-        phoneCol.setCellValueFactory(new PropertyValueFactory<Employee, String>("phone"));
-        usernameCol.setCellValueFactory(new PropertyValueFactory<Employee, String>("username"));
-        passwordCol.setCellValueFactory(new PropertyValueFactory<Employee, String>("password"));
-        branchIdCol.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("branch_id"));
-
-        ObservableList<Employee> employeeList = null;
-        try {
-            employeeList = FXCollections.observableArrayList(EmployeeService.getEmployees());
-        } catch (SQLException ex) {
-            Logger.getLogger(FXMLBranchController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        employeeTable.setItems(employeeList);
-    }
-
-    public void addEmployee(ActionEvent e) throws SQLException {
-        if (txtName.getText().trim().isEmpty() || txtPhone.getText().trim().isEmpty()
-                || txtUsername.getText().trim().isEmpty() || txtPassword.getText().trim().isEmpty()) {
-            MessageBox.getBox("Error", "Please complete all fields before insert!!!", Alert.AlertType.ERROR).show();
-
-        } else {
-            try (Connection conn = JdbcUtils.getConn()) {
-                String name, phone, username, password;
-                int branchId;
-
-                name = txtName.getText();
-                phone = txtPhone.getText();
-                username = txtUsername.getText();
-                password = txtPassword.getText();
-                branchId = cbBranch.getSelectionModel().getSelectedItem().getId();
-                Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to insert this field?",
-                        Alert.AlertType.CONFIRMATION).showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    EmployeeService.addEmployee(new Employee(name, phone, username, password, branchId));
-                    MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
-                    renewTable();
-                    txtName.clear();
-                    txtPhone.clear();
-                    txtUsername.clear();
-                    txtPassword.clear();
-                    cbBranch.getSelectionModel().selectFirst();
-                } else if (result.get() == ButtonType.CANCEL) {
-
-                }
-            }
-        }
-
-    }
-
     @FXML
     public void getSelected(MouseEvent e) throws SQLException {
         index = employeeTable.getSelectionModel().getSelectedIndex();
@@ -210,5 +177,39 @@ public class FXMLEmployeeController implements Initializable {
             }
 
         }
+    }
+    
+    public void addEmployee(ActionEvent e) throws SQLException {
+        if (txtName.getText().trim().isEmpty() || txtPhone.getText().trim().isEmpty()
+                || txtUsername.getText().trim().isEmpty() || txtPassword.getText().trim().isEmpty()) {
+            MessageBox.getBox("Error", "Please complete all fields before insert!!!", Alert.AlertType.ERROR).show();
+
+        } else {
+            try (Connection conn = JdbcUtils.getConn()) {
+                String name, phone, username, password;
+                int branchId;
+
+                name = txtName.getText();
+                phone = txtPhone.getText();
+                username = txtUsername.getText();
+                password = txtPassword.getText();
+                branchId = cbBranch.getSelectionModel().getSelectedItem().getId();
+                Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to insert this field?",
+                        Alert.AlertType.CONFIRMATION).showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    EmployeeService.addEmployee(new Employee(name, phone, username, password, branchId));
+                    MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
+                    renewTable();
+                    txtName.clear();
+                    txtPhone.clear();
+                    txtUsername.clear();
+                    txtPassword.clear();
+                    cbBranch.getSelectionModel().selectFirst();
+                } else if (result.get() == ButtonType.CANCEL) {
+
+                }
+            }
+        }
+
     }
 }

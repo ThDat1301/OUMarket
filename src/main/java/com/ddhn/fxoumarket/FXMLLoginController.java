@@ -7,6 +7,7 @@ package com.ddhn.fxoumarket;
 import com.ddhn.pojo.Employee;
 import com.ddhn.services.EmployeeService;
 import com.ddhn.services.LoginService;
+import com.ddhn.utils.MessageBox;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -20,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
@@ -34,10 +36,10 @@ public class FXMLLoginController implements Initializable {
     @FXML private TextField txtPassword;
     
     public static int currentEmployeeId;
-    public void loginHandler(ActionEvent e) throws SQLException, IOException {
+     public void loginHandler(ActionEvent e) throws SQLException, IOException {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
-       
+        MessageBox.getBox("Test", String.valueOf(LoginService.Login(username, password)), Alert.AlertType.INFORMATION);
         if (LoginService.Login(username, password) == 1) {
             currentEmployeeId = EmployeeService.getIdByName(username);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLMain.fxml"));
