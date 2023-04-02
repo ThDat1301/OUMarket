@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -21,7 +20,7 @@
    <children>
       <VBox prefHeight="699.0" prefWidth="442.0">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="249.0" prefWidth="366.0">
                <children>
                   <Label text="Purchase Information ">
                      <font>
@@ -30,27 +29,51 @@
                   </Label>
                   <GridPane hgap="10.0" vgap="10.0">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="173.0" minWidth="10.0" prefWidth="123.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="233.0" minWidth="10.0" prefWidth="233.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Date">
+                        <Label text="Today's Date">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label text="Customer" GridPane.rowIndex="1">
+                        <Label text="Customer's ID" GridPane.rowIndex="1">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="dpDate" prefHeight="26.0" prefWidth="198.0" GridPane.columnIndex="1" />
-                        <ComboBox fx:id="cbCustomer" prefHeight="26.0" prefWidth="196.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lbDate" prefHeight="30.0" prefWidth="262.0" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Label>
+                        <Label text="Customer name" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbCusName" prefHeight="30.0" prefWidth="244.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Label>
+                        <TextField fx:id="txtcusID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Customer date" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbCusDate" prefHeight="30.0" prefWidth="239.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Label>
+                        <Button mnemonicParsing="false" onAction="#getCusInfo" prefHeight="25.0" prefWidth="200.0" text="Search" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
                </children>

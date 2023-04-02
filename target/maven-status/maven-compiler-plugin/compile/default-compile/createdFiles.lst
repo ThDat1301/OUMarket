@@ -7,6 +7,7 @@ module-info.class
 com\ddhn\conf\JdbcUtils.class
 com\ddhn\pojo\Product.class
 com\ddhn\fxoumarket\FXMLLoginController.class
+com\ddhn\pojo\Customer.class
 com\ddhn\services\OrderService.class
 com\ddhn\pojo\OrderDetails.class
 com\ddhn\fxoumarket\FXMLProductController.class
@@ -14,7 +15,9 @@ com\ddhn\fxoumarket\FXMLPurchaseController.class
 com\ddhn\services\ProductService.class
 com\ddhn\pojo\Branch.class
 com\ddhn\services\LoginService.class
+com\ddhn\fxoumarket\FXMLBranchController.class
 com\ddhn\fxoumarket\FXMLPurchaseController$1$1.class
+com\ddhn\services\CustomerService.class
 com\ddhn\fxoumarket\FXMLPurchaseController$1.class
 com\ddhn\pojo\Cart.class
 com\ddhn\pojo\Order.class

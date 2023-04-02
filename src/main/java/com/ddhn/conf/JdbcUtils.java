@@ -17,11 +17,11 @@ public class JdbcUtils {
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-        }
+        } catch (ClassNotFoundException ex) {}
     }
     
     public static Connection getConn () throws SQLException {
         return DriverManager.getConnection("jdbc:mysql://localhost/oumarketdb", "root", "01312101220LtfA");
+//        return DriverManager.getConnection("jdbc:mysql://localhost/oumarketdb", "root", "Admin@123");
     }
 }

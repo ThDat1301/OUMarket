@@ -35,8 +35,13 @@ public class Order {
         this.employeeId = employeeId;
     }
     
-     public Order(Date date, float totalPrice, float moneyCus, int employeeId) {
+    public Order(Date date, float totalPrice, float moneyCus, int employeeId) {
         this.date = date;
+        this.totalPrice = totalPrice;
+        this.moneyCus = moneyCus;
+        this.employeeId = employeeId;
+    }
+    public Order(float totalPrice, float moneyCus, int employeeId) {
         this.totalPrice = totalPrice;
         this.moneyCus = moneyCus;
         this.employeeId = employeeId;

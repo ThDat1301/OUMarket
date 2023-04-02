@@ -6,11 +6,14 @@ package com.ddhn.fxoumarket;
 
 import com.ddhn.conf.JdbcUtils;
 import com.ddhn.pojo.Branch;
+import com.ddhn.pojo.Customer;
 import com.ddhn.services.BranchService;
+import com.ddhn.services.CustomerService;
 import com.ddhn.utils.MessageBox;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -51,19 +54,37 @@ public class FXMLBranchController implements Initializable {
     private TextField txtAddress;
 
     int index = -1;
-
-    public void renewTable() {
-        idCol.setCellValueFactory(new PropertyValueFactory<Branch, Integer>("id"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<Branch, String>("name"));
-        addressCol.setCellValueFactory(new PropertyValueFactory<Branch, String>("address"));
-        ObservableList<Branch> branchList = null;
-        try {
-            branchList = FXCollections.observableArrayList(BranchService.getBranchs());
-        } catch (SQLException ex) {
-            Logger.getLogger(FXMLBranchController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        branchTable.setItems(branchList);
+    public void loadTableView() throws SQLException
+    {
+        idCol = new TableColumn("ID");
+        idCol.setCellValueFactory(new PropertyValueFactory("id"));
+        idCol.setPrefWidth(37);
+        
+        nameCol = new TableColumn("Name");
+        nameCol.setCellValueFactory(new PropertyValueFactory("name"));
+        nameCol.setPrefWidth(200);
+        
+        addressCol = new TableColumn("Branch");
+        addressCol.setCellValueFactory(new PropertyValueFactory("address"));
+        addressCol.setPrefWidth(400);
+        
+        this.branchTable.getColumns().addAll(idCol, nameCol, addressCol);
+        List<Branch> branch = BranchService.getBranchs();
+        this.branchTable.getItems().clear();
+        this.branchTable.setItems(FXCollections.observableList(branch));
     }
+//    public void renewTable() {
+//        idCol.setCellValueFactory(new PropertyValueFactory<Branch, Integer>("id"));
+//        nameCol.setCellValueFactory(new PropertyValueFactory<Branch, String>("name"));
+//        addressCol.setCellValueFactory(new PropertyValueFactory<Branch, String>("address"));
+//        ObservableList<Branch> branchList = null;
+//        try {
+//            branchList = FXCollections.observableArrayList(BranchService.getBranchs());
+//        } catch (SQLException ex) {
+//            Logger.getLogger(FXMLBranchController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        branchTable.setItems(branchList);
+//    }
 
     public void addBranch(ActionEvent e) throws SQLException {
         boolean a = txtName.getText().trim().isEmpty();
@@ -82,7 +103,7 @@ public class FXMLBranchController implements Initializable {
                     BranchService.addBranch(new Branch(name, address));
                     txtName.clear();
                     txtAddress.clear();
-                    renewTable();
+                    loadTableView();
                     MessageBox.getBox("Success", "Updated successfully!!!", Alert.AlertType.INFORMATION).show();
                 } else if (result.get() == ButtonType.CANCEL) {
 
@@ -119,7 +140,7 @@ public class FXMLBranchController implements Initializable {
                 if (result.get() == ButtonType.OK) {
                     BranchService.updateBranch(new Branch(id, name, address));
                     MessageBox.getBox("Success", "Updated successfully!!!", Alert.AlertType.INFORMATION).show();
-                    renewTable();
+                    loadTableView();
                 } else if (result.get() == ButtonType.CANCEL) {
 
                 }
@@ -132,7 +153,6 @@ public class FXMLBranchController implements Initializable {
         try (Connection conn = JdbcUtils.getConn()) {
             int id;
             id = Integer.parseInt(String.valueOf(branchTable.getItems().get(index).getId()));
-            renewTable();
             Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to delete this field?",
                     Alert.AlertType.CONFIRMATION).showAndWait();
             if (result.get() == ButtonType.OK) {
@@ -140,7 +160,7 @@ public class FXMLBranchController implements Initializable {
                 MessageBox.getBox("Success", "Deleted successfully!!!", Alert.AlertType.INFORMATION).show();
                 txtName.clear();
                 txtAddress.clear();
-                renewTable();
+                loadTableView();
             } else if (result.get() == ButtonType.CANCEL) {
 
             }
@@ -152,7 +172,11 @@ public class FXMLBranchController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        renewTable();
+        try {
+            loadTableView();
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLBranchController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

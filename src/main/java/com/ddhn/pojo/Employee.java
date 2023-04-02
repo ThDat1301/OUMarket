@@ -31,9 +31,6 @@ public class Employee {
         this.branch_id = branch_id;
     }
     
-    
-
-    
     /**
      * @return the id
      */

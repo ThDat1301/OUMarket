@@ -11,6 +11,7 @@ import com.ddhn.utils.MessageBox;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -61,7 +62,11 @@ public class FXMLProductController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        renewTable();
+        try {
+            renewTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLProductController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
     
     private void clearInput() {
@@ -72,7 +77,16 @@ public class FXMLProductController implements Initializable {
         rdAvaiYes.setSelected(true);
     }
     
-    public void renewTable() {
+    public void renewTable() throws SQLException {
+        this.tbProduct.getItems().clear();
+        this.tbProduct.getColumns().clear();
+        colId = new TableColumn("ID");
+        colName = new TableColumn("Name");
+        colOrigin = new TableColumn("Origin");
+        colPrice = new TableColumn("Price");
+        colDiscountPrice = new TableColumn("Discount Price");
+        colActive = new TableColumn("Active");
+        
         colId.setCellValueFactory(new PropertyValueFactory<Product, Integer>("id"));
         colName.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
         colOrigin.setCellValueFactory(new PropertyValueFactory<Product, String>("origin"));
@@ -80,14 +94,23 @@ public class FXMLProductController implements Initializable {
         colDiscountPrice.setCellValueFactory(new PropertyValueFactory<Product, Float>("discountPrice"));
         colActive.setCellValueFactory(new PropertyValueFactory<Product, Boolean>("active"));
         
-        ObservableList<Product> products = null;
-        try {
-            products = FXCollections.observableArrayList(ProductService.getProducts());
-        } catch (SQLException ex) {
-            Logger.getLogger(FXMLProductController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.tbProduct.getColumns().addAll(colId, 
+                colName,
+                colOrigin,
+                colPrice,
+                colDiscountPrice,
+                colActive);
+        List<Product> p = ProductService.getProducts();
+        this.tbProduct.setItems(FXCollections.observableArrayList(p));
         
-        tbProduct.setItems(products);
+//        ObservableList<Product> products = null;
+//        try {
+//            products = FXCollections.observableArrayList(ProductService.getProducts());
+//        } catch (SQLException ex) {
+//            Logger.getLogger(FXMLProductController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//        tbProduct.setItems(products);
     }
     
     public void getSelected() {

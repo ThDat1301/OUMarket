@@ -42,6 +42,7 @@ public class FXMLMainController implements Initializable {
     @FXML private HBox employeeScreen;
     @FXML private HBox productScreen;
     @FXML private HBox purchaseScreen;
+    @FXML private HBox customerScreen;
     /**
      * Initializes the controller class.
      */
@@ -69,10 +70,24 @@ public class FXMLMainController implements Initializable {
     public void exit(ActionEvent e) {
         Platform.exit();
     }
-
+    public void showCustomer(ActionEvent e)
+    {
+        customerScreen.setVisible(true);
+        customerScreen.setManaged(true);
+        employeeScreen.setVisible(false);
+        employeeScreen.setManaged(false);
+        branchScreen.setVisible(false);
+        branchScreen.setManaged(false);
+        productScreen.setVisible(false);
+        productScreen.setManaged(false);
+        purchaseScreen.setVisible(false);
+        purchaseScreen.setManaged(false);
+    }
     public void showEmployee(ActionEvent e) {
         employeeScreen.setVisible(true);
         employeeScreen.setManaged(true);
+        customerScreen.setVisible(false);
+        customerScreen.setManaged(false);
         branchScreen.setVisible(false);
         branchScreen.setManaged(false);
         productScreen.setVisible(false);
@@ -85,6 +100,8 @@ public class FXMLMainController implements Initializable {
     public void showBranch(ActionEvent e) {
         branchScreen.setVisible(true);
         branchScreen.setManaged(true);      
+        customerScreen.setVisible(false);
+        customerScreen.setManaged(false);
         employeeScreen.setVisible(false);
         employeeScreen.setManaged(false);
         productScreen.setVisible(false);
@@ -96,6 +113,8 @@ public class FXMLMainController implements Initializable {
     public void showProduct(ActionEvent e) {
         productScreen.setVisible(true);
         productScreen.setManaged(true);
+        customerScreen.setVisible(false);
+        customerScreen.setManaged(false);
         branchScreen.setVisible(false);
         branchScreen.setManaged(false);      
         employeeScreen.setVisible(false);
@@ -107,6 +126,8 @@ public class FXMLMainController implements Initializable {
     public void showPurchase(ActionEvent e) {
         purchaseScreen.setVisible(true);
         purchaseScreen.setManaged(true);
+        customerScreen.setVisible(false);
+        customerScreen.setManaged(false);
         productScreen.setVisible(false);
         productScreen.setManaged(false);
         branchScreen.setVisible(false);
