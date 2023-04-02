@@ -19,7 +19,7 @@ public class Employee {
         this.name = name;
         this.phone = phone;
         this.username = username;
-        this.password = DigestUtils.md5Hex(password);
+        this.password = password;
         this.branch_id = branch_id;
     }
     
@@ -27,7 +27,7 @@ public class Employee {
         this.name = name;
         this.phone = phone;
         this.username = username;
-        this.password = DigestUtils.md5Hex(password);
+        this.password = password;
         this.branch_id = branch_id;
     }
     
