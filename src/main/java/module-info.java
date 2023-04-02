@@ -9,4 +9,6 @@ module com.ddhn.fxoumarket {
     opens com.ddhn.fxoumarket to javafx.fxml;
     exports com.ddhn.fxoumarket;
     exports com.ddhn.pojo;
+    exports com.ddhn.services;
+    exports com.ddhn.conf;
 }
