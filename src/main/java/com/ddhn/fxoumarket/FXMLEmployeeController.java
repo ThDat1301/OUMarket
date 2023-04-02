@@ -25,6 +25,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -36,7 +37,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * FXML Controller class
@@ -77,6 +80,16 @@ public class FXMLEmployeeController implements Initializable {
     private Button btnDelete;
 
     int index = -1;
+    
+    private int empId;
+    
+    public void setEmplId(int id) {
+        empId = id;
+    }
+    
+    public int getEmplId() {
+        return empId;
+    }
 
     /**
      * Initializes the controller class.
@@ -183,12 +196,28 @@ public class FXMLEmployeeController implements Initializable {
         }
     }
     
-    public void showChangePassword() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("FXMLChangePassword.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.show();
+    public void showChangePassword() throws IOException, SQLException {
+        if (index == -1) {
+            MessageBox.getBox("Error", "Please choose the employee!", Alert.AlertType.WARNING).show();
+        }
+        else {
+            int id = Integer.parseInt(String.valueOf(employeeTable.getItems().get(index).getId()));
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLChangePassword.fxml"));
+            Parent root = fxmlLoader.load();
+            
+            FXMLChangePasswordController fxmlChangePasswordController = fxmlLoader.getController();
+            fxmlChangePasswordController.setEmplId(id);
+            
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.showAndWait();
+            
+            renewTable();
+        }
+
+        
     }
     
     public void addEmployee(ActionEvent e) throws SQLException {
@@ -209,6 +238,7 @@ public class FXMLEmployeeController implements Initializable {
                 Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to insert this field?",
                         Alert.AlertType.CONFIRMATION).showAndWait();
                 if (result.get() == ButtonType.OK) {
+                    password = DigestUtils.md5Hex(password);
                     EmployeeService.addEmployee(new Employee(name, phone, username, password, branchId));
                     MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
                     renewTable();

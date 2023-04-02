@@ -37,7 +37,7 @@
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password" GridPane.rowIndex="3" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Branch" GridPane.rowIndex="4" />
                   <TextField fx:id="txtUsername" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <TextField fx:id="txtPassword" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="txtPassword" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <ComboBox fx:id="cbBranch" prefHeight="26.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                </children>
             </GridPane>
@@ -46,7 +46,7 @@
                   <Button fx:id="btnInsert" mnemonicParsing="false" onAction="#addEmployee" styleClass="btn-select" text="Insert" />
                   <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#updateEmployee" styleClass="btn-select" text="Update" />
                   <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteEmployee" styleClass="btn-select" text="Delete" />
-                  <Button fx:id="showChangePassword" mnemonicParsing="false" onAction="#showChangePassword" text="Update password" />
+                  <Button fx:id="showChangePassword" mnemonicParsing="false" onAction="#showChangePassword" prefHeight="31.2" prefWidth="115.0" text="Update password" />
                </children>
             </HBox>
          </children>

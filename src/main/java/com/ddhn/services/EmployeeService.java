@@ -93,4 +93,24 @@ public class EmployeeService {
         return id;
         }
     }
+    
+    public static Employee getEmpById(int idEmpl) throws SQLException {
+        int id = 0, branch_id = 0;
+        String name = null, phone = null, username = null, password = null;
+        try (Connection conn = JdbcUtils.getConn()) {
+            String sql = "SELECT * FROM employee WHERE id = ?";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setInt(1, idEmpl);
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()) {
+                id = rs.getInt("id");
+                name = rs.getString("name");
+                phone = rs.getString("phone");
+                username = rs.getString("username");
+                password = rs.getString("password");
+                branch_id = rs.getInt("branch_id");
+            }
+        }
+        return new Employee(id, name, phone, username, password, branch_id);
+    } 
 }
