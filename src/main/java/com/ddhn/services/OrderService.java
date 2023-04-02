@@ -20,7 +20,7 @@ import java.util.List;
 public class OrderService {
     public static boolean addOrder(Order o, int cusId) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "ISNERT INTO order (id, date, totalPrice, moneyCus, customer_id, employee_id) VALUES(?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO order (id, date, totalPrice, moneyCus, customer_id, employee_id) VALUES(?, ?, ?, ?, ?, ?)";
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setInt(1, o.getId());
             stm.setDate(2, o.getDate());

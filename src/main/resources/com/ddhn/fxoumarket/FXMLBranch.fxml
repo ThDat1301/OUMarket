@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -46,13 +45,7 @@
       </VBox>
       <VBox prefHeight="699.0" prefWidth="700.0">
          <children>
-            <TableView fx:id="branchTable" onMouseClicked="#getSelected" prefHeight="454.0" prefWidth="365.0">
-              <columns>
-                <TableColumn fx:id="idCol" prefWidth="61.59997636079788" text="ID" />
-                <TableColumn fx:id="nameCol" prefWidth="174.13326263427734" text="Name" />
-                  <TableColumn fx:id="addressCol" prefWidth="402.6667785644531" text="Address" />
-              </columns>
-            </TableView>
+            <TableView fx:id="branchTable" onMouseClicked="#getSelected" prefHeight="650.0" prefWidth="639.0" />
          </children>
       </VBox>
    </children>

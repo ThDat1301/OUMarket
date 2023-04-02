@@ -12,11 +12,16 @@ import com.ddhn.pojo.Product;
 import com.ddhn.services.EmployeeService;
 import com.ddhn.services.OrderService;
 import com.ddhn.services.ProductService;
+import com.ddhn.services.CustomerService;
 import com.ddhn.utils.MessageBox;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,13 +39,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
-
+import javafx.util.StringConverter;
+import javafx.util.converter.DateStringConverter;
 /**
  * FXML Controller class
  *
@@ -48,7 +55,7 @@ import javafx.util.Callback;
  */
 public class FXMLPurchaseController implements Initializable {
     @FXML private DatePicker dpDate;
-    @FXML private ComboBox cbCustomer;
+//    @FXML private ComboBox cbCustomer;
     @FXML private ComboBox<Product> cbProduct;
     @FXML private TextField txtProductName;
     @FXML private TextField txtProductPrice;
@@ -60,18 +67,24 @@ public class FXMLPurchaseController implements Initializable {
     @FXML private TextField txtCustomerMoney;
     @FXML private Button btnSubmit;
     @FXML private TableView<Cart> tbProduct;
-
+    
+    @FXML private TextField txtcusID;
+    @FXML private Label lbDate;
+    @FXML private Label lbCusName; 
+    @FXML private Label lbCusDate;
+    private float voucher = 1.f;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            
+            this.lbDate.setText(getLocalDate());
             loadProduct();
             loadTableColumns();
             this.cbProduct.getSelectionModel().selectFirst();
             onChangeProduct();
+            
         } catch (SQLException ex) {
             Logger.getLogger(FXMLPurchaseController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -156,18 +169,16 @@ public class FXMLPurchaseController implements Initializable {
             @Override
             public TableCell<Cart, Void> call(final TableColumn<Cart, Void> param) {
                 final TableCell<Cart, Void> cell = new TableCell<Cart, Void>() {
-
                     private final Button btn = new Button("Delete");
-
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Cart data = getTableView().getItems().get(getIndex());
                             tbProduct.getItems().remove(data);
-                            txtTotalAmount.setText(String.valueOf(getTotalAmount()));
+                            checkVoucher();
+                            txtTotalAmount.setText(String.valueOf(getTotalAmount()*voucher));
                             
                         });
                     }
-
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -199,6 +210,7 @@ public class FXMLPurchaseController implements Initializable {
     }
     
     public void addToCart(ActionEvent e) {
+        
         int id = cbProduct.getSelectionModel().getSelectedItem().getId();
         String name = cbProduct.getSelectionModel().getSelectedItem().getName();
         float price = cbProduct.getSelectionModel().getSelectedItem().getPrice();
@@ -217,9 +229,10 @@ public class FXMLPurchaseController implements Initializable {
         }
         else {
             Cart item = new Cart(id, name, price, discountPrice, quantity, amount);
-            tbProduct.getItems().add(item);
+            tbProduct.getItems().add(item);           
         }
-        txtTotalAmount.setText(String.valueOf(getTotalAmount()));
+        checkVoucher();
+        txtTotalAmount.setText(String.valueOf(getTotalAmount()*voucher));
         
     }
     
@@ -242,7 +255,7 @@ public class FXMLPurchaseController implements Initializable {
     }
     
     public void addOrder(ActionEvent e) throws SQLException {
-        if (dpDate.getValue() != null && txtTotalAmount.getText() != null && txtCustomerMoney.getText() != null) {
+        if (!txtTotalAmount.getText().trim().isEmpty() && !txtCustomerMoney.getText().trim().isEmpty()) {
             if (Float.parseFloat(txtCustomerMoney.getText()) >= Float.parseFloat(txtTotalAmount.getText())) {
                 try (Connection conn = JdbcUtils.getConn()) {
                     Date date;
@@ -250,16 +263,18 @@ public class FXMLPurchaseController implements Initializable {
                     int employeeId;
                     ObservableList<Cart> cart = tbProduct.getItems();
                     List<OrderDetails> listOd = new ArrayList<>();
+                    
                     for (Cart c : cart) {
                         OrderDetails od = new OrderDetails(c.getProductQuantity(), c.getProductId());
                         listOd.add(od);
                     }
-
-                    date = Date.valueOf(dpDate.getValue());
+                    
                     totalPrice = Float.parseFloat(txtTotalAmount.getText());
                     moneyCustomer = Float.parseFloat(txtCustomerMoney.getText());
                     employeeId = FXMLLoginController.currentEmployeeId;
-
+                    LocalDate localDate = LocalDate.now();
+                    date = Date.valueOf(localDate);
+                    
                     Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to checkout?",
                         Alert.AlertType.CONFIRMATION).showAndWait();
                     if (result.get() == ButtonType.OK) {
@@ -281,5 +296,44 @@ public class FXMLPurchaseController implements Initializable {
         
     }
     
+    public String getLocalDate(){
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return currentDate.format(formatter);
+    }
     
+    public void getCusInfo() throws SQLException
+    {
+        int cusID = Integer.parseInt(txtcusID.getText());
+        if(CustomerService.getCustomerByID(cusID) != null)
+        {
+            Date cusDate = CustomerService.getCustomerByID(cusID).getCusBirthOfDate();
+            String cusName = CustomerService.getCustomerByID(cusID).getCusName();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String cusDateString = dateFormat.format(cusDate);
+            lbCusDate.setText(cusDateString);
+            lbCusName.setText(cusName);    
+            checkVoucher();
+        } else
+        {
+            MessageBox.getBox("Test", "Test", Alert.AlertType.WARNING).show();
+        }
+    }
+    public void checkVoucher()
+    {
+        String[] cusDate = this.lbCusDate.getText().split("-");
+        String[] date = this.lbDate.getText().split("-");
+        float totalAmount = getTotalAmount();
+        if(!lbCusDate.getText().isEmpty() && !lbDate.getText().isEmpty())
+        {
+            if(cusDate[0].compareTo(date[0]) == cusDate[1].compareTo(date[1]) && totalAmount >= 1000000)
+            {
+                voucher = 0.9f;
+
+            } else {
+                voucher = 1f;
+            }
+        } 
+             
+    }
 }
