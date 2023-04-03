@@ -48,31 +48,51 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.DateStringConverter;
+
 /**
  * FXML Controller class
  *
  * @author truon
  */
 public class FXMLPurchaseController implements Initializable {
-    @FXML private DatePicker dpDate;
+
+    @FXML
+    private DatePicker dpDate;
 //    @FXML private ComboBox cbCustomer;
-    @FXML private ComboBox<Product> cbProduct;
-    @FXML private TextField txtProductName;
-    @FXML private TextField txtProductPrice;
-    @FXML private TextField txtProductDiscountPrice;
-    @FXML private TextField txtQuantity;
-    @FXML private TextField txtAmmount;
-    @FXML private Button btnAddToCart;
-    @FXML private TextField txtTotalAmount;
-    @FXML private TextField txtCustomerMoney;
-    @FXML private Button btnSubmit;
-    @FXML private TableView<Cart> tbProduct;
-    
-    @FXML private TextField txtcusID;
-    @FXML private Label lbDate;
-    @FXML private Label lbCusName; 
-    @FXML private Label lbCusDate;
+    @FXML
+    private ComboBox<Product> cbProduct;
+    @FXML
+    private TextField txtProductName;
+    @FXML
+    private TextField txtProductPrice;
+    @FXML
+    private TextField txtProductDiscountPrice;
+    @FXML
+    private TextField txtQuantity;
+    @FXML
+    private TextField txtAmmount;
+    @FXML
+    private Button btnAddToCart;
+    @FXML
+    private TextField txtTotalAmount;
+    @FXML
+    private TextField txtCustomerMoney;
+    @FXML
+    private Button btnSubmit;
+    @FXML
+    private TableView<Cart> tbProduct;
+
+    @FXML
+    private TextField txtcusID;
+    @FXML
+    private Label lbDate;
+    @FXML
+    private Label lbCusName;
+    @FXML
+    private Label lbCusDate;
     private float voucher = 1.f;
+    private boolean checkCus = false;
+
     /**
      * Initializes the controller class.
      */
@@ -84,11 +104,11 @@ public class FXMLPurchaseController implements Initializable {
             loadTableColumns();
             this.cbProduct.getSelectionModel().selectFirst();
             onChangeProduct();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(FXMLPurchaseController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         this.txtQuantity.textProperty().addListener(e -> {
             onChangeQuantity();
         });
@@ -100,18 +120,17 @@ public class FXMLPurchaseController implements Initializable {
                 Logger.getLogger(FXMLPurchaseController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
-        
-    }   
-    
+
+    }
+
     public void loadProduct() throws SQLException {
-        
+
         List<Product> list = ProductService.getProducts();
         cbProduct.setItems(FXCollections.observableList(list));
     }
-    
+
     public void onChangeProduct() throws SQLException {
-           
+
         int id = cbProduct.getSelectionModel().getSelectedItem().getId();
         String name = cbProduct.getSelectionModel().getSelectedItem().getName();
         float price = cbProduct.getSelectionModel().getSelectedItem().getPrice();
@@ -123,15 +142,16 @@ public class FXMLPurchaseController implements Initializable {
         txtProductName.setText(name);
         txtProductPrice.setText(String.valueOf(price));
         txtProductDiscountPrice.setText(String.valueOf(discountPrice));
-        if(discountPrice != 0) {
+        if (discountPrice != 0) {
             txtAmmount.setText(String.valueOf(discountPrice * quantity));
+        } else {
+            txtAmmount.setText(String.valueOf(price * quantity));
         }
-        else txtAmmount.setText(String.valueOf(price * quantity));
 
     }
-    
+
     private void loadTableColumns() {
-             
+
         TableColumn colProductId = new TableColumn("ID");
         colProductId.setCellValueFactory(new PropertyValueFactory("productId"));
         colProductId.setPrefWidth(30);
@@ -143,25 +163,24 @@ public class FXMLPurchaseController implements Initializable {
         TableColumn colProductPrice = new TableColumn("Price");
         colProductPrice.setCellValueFactory(new PropertyValueFactory("productPrice"));
         colProductPrice.setPrefWidth(65);
-        
+
         TableColumn colProductDiscountPrice = new TableColumn("Discount price");
         colProductDiscountPrice.setCellValueFactory(new PropertyValueFactory("productDiscountPrice"));
         colProductDiscountPrice.setPrefWidth(100);
-        
+
         TableColumn colQuantity = new TableColumn("Quantity");
         colQuantity.setCellValueFactory(new PropertyValueFactory("productQuantity"));
         colQuantity.setPrefWidth(75);
-        
+
         TableColumn colAmount = new TableColumn("Amount");
         colAmount.setCellValueFactory(new PropertyValueFactory("productAmount"));
         colAmount.setPrefWidth(70);
-        
-                
-        this.tbProduct.getColumns().addAll(colProductId,colProductName, colProductPrice,
+
+        this.tbProduct.getColumns().addAll(colProductId, colProductName, colProductPrice,
                 colProductDiscountPrice, colQuantity, colAmount);
         addButtonToTable();
     }
-    
+
     private void addButtonToTable() {
         TableColumn<Cart, Void> colBtn = new TableColumn();
 
@@ -170,15 +189,17 @@ public class FXMLPurchaseController implements Initializable {
             public TableCell<Cart, Void> call(final TableColumn<Cart, Void> param) {
                 final TableCell<Cart, Void> cell = new TableCell<Cart, Void>() {
                     private final Button btn = new Button("Delete");
+
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Cart data = getTableView().getItems().get(getIndex());
                             tbProduct.getItems().remove(data);
                             checkVoucher();
-                            txtTotalAmount.setText(String.valueOf(getTotalAmount()*voucher));
-                            
+                            txtTotalAmount.setText(String.valueOf(getTotalAmount() * voucher));
+
                         });
                     }
+
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -198,26 +219,27 @@ public class FXMLPurchaseController implements Initializable {
         tbProduct.getColumns().add(colBtn);
 
     }
-    
+
     private void onChangeQuantity() {
         float price = Float.parseFloat(txtProductPrice.getText());
         float discountPrice = Float.parseFloat(txtProductDiscountPrice.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
         if (discountPrice != 0) {
             txtAmmount.setText(String.valueOf(discountPrice * quantity));
+        } else {
+            txtAmmount.setText(String.valueOf(price * quantity));
         }
-        else txtAmmount.setText(String.valueOf(price * quantity));
     }
-    
+
     public void addToCart(ActionEvent e) {
-        
+
         int id = cbProduct.getSelectionModel().getSelectedItem().getId();
         String name = cbProduct.getSelectionModel().getSelectedItem().getName();
         float price = cbProduct.getSelectionModel().getSelectedItem().getPrice();
         float discountPrice = cbProduct.getSelectionModel().getSelectedItem().getDiscountPrice();
         float quantity = Float.parseFloat(txtQuantity.getText());
         float amount = Float.parseFloat(txtAmmount.getText());
-        
+
         ObservableList<Cart> list = tbProduct.getItems();
         Cart c = checkDup(list, id);
         if (c != null) {
@@ -226,34 +248,33 @@ public class FXMLPurchaseController implements Initializable {
             c.setProductQuantity(quantity);
             c.setProductAmount(amount);
             tbProduct.refresh();
-        }
-        else {
+        } else {
             Cart item = new Cart(id, name, price, discountPrice, quantity, amount);
-            tbProduct.getItems().add(item);           
+            tbProduct.getItems().add(item);
         }
         checkVoucher();
-        txtTotalAmount.setText(String.valueOf(getTotalAmount()*voucher));
-        
+        txtTotalAmount.setText(String.valueOf(getTotalAmount() * voucher));
+
     }
-    
+
     public Cart checkDup(ObservableList<Cart> list, int id) {
-        for(Cart c : list) {
+        for (Cart c : list) {
             if (c.getProductId() == id) {
                 return c;
             }
         }
         return null;
     }
-    
+
     public float getTotalAmount() {
         float totalAmount = 0;
         ObservableList<Cart> list = tbProduct.getItems();
-        for(Cart item : list) {
+        for (Cart item : list) {
             totalAmount += item.getProductAmount();
         }
         return totalAmount;
     }
-    
+
     public void addOrder(ActionEvent e) throws SQLException {
         if (!txtTotalAmount.getText().trim().isEmpty() && !txtCustomerMoney.getText().trim().isEmpty()) {
             if (Float.parseFloat(txtCustomerMoney.getText()) >= Float.parseFloat(txtTotalAmount.getText())) {
@@ -263,77 +284,94 @@ public class FXMLPurchaseController implements Initializable {
                     int employeeId;
                     ObservableList<Cart> cart = tbProduct.getItems();
                     List<OrderDetails> listOd = new ArrayList<>();
-                    
+
                     for (Cart c : cart) {
                         OrderDetails od = new OrderDetails(c.getProductQuantity(), c.getProductId());
                         listOd.add(od);
                     }
-                    
+
                     totalPrice = Float.parseFloat(txtTotalAmount.getText());
                     moneyCustomer = Float.parseFloat(txtCustomerMoney.getText());
                     employeeId = FXMLLoginController.currentEmployeeId;
                     LocalDate localDate = LocalDate.now();
                     date = Date.valueOf(localDate);
-                    
-                    Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to checkout?",
-                        Alert.AlertType.CONFIRMATION).showAndWait();
-                    if (result.get() == ButtonType.OK) {
-                        OrderService.addOrder(new Order(date, totalPrice, moneyCustomer, employeeId), listOd);
-                        MessageBox.getBox("Success", "Checkout successfully!!!", Alert.AlertType.INFORMATION).show();
-                    }
-                    else if (result.get() == ButtonType.CANCEL) {
-                        
-                    }  
-                }
-            }
-            else MessageBox.getBox("Error", 
-            "Please input Customer's money greater or equal than Total Amount", 
-            Alert.AlertType.ERROR).show();
-        }
-        else MessageBox.getBox("Error", "Please complete all fields before checkout!!!", Alert.AlertType.ERROR).show();
 
-        
-        
+                    Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to checkout?",
+                            Alert.AlertType.CONFIRMATION).showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        if (checkCus) {
+                            int customerId = Integer.parseInt(txtcusID.getText());
+                            OrderService.addOrder(new Order(date, totalPrice, moneyCustomer, customerId, employeeId), listOd, checkCus);
+                            MessageBox.getBox("Success", "Checkout successfully!!!", Alert.AlertType.INFORMATION).show();
+                            checkCus = false;
+                        }
+                        else {
+                            OrderService.addOrder(new Order(date, totalPrice, moneyCustomer, employeeId), listOd, checkCus);
+                            MessageBox.getBox("Success", "Checkout successfully!!!", Alert.AlertType.INFORMATION).show();
+                        }
+                        
+                    } else if (result.get() == ButtonType.CANCEL) {
+
+                    }
+                }
+            } else {
+                MessageBox.getBox("Error",
+                        "Please input Customer's money greater or equal than Total Amount",
+                        Alert.AlertType.ERROR).show();
+            }
+        } else {
+            MessageBox.getBox("Error", "Please complete all fields before checkout!!!", Alert.AlertType.ERROR).show();
+        }
+
     }
-    
-    public String getLocalDate(){
+
+    public String getLocalDate() {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return currentDate.format(formatter);
     }
-    
-    public void getCusInfo() throws SQLException
-    {
-        int cusID = Integer.parseInt(txtcusID.getText());
-        if(CustomerService.getCustomerByID(cusID) != null)
-        {
-            Date cusDate = CustomerService.getCustomerByID(cusID).getCusBirthOfDate();
-            String cusName = CustomerService.getCustomerByID(cusID).getCusName();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            String cusDateString = dateFormat.format(cusDate);
-            lbCusDate.setText(cusDateString);
-            lbCusName.setText(cusName);    
-            checkVoucher();
-        } else
-        {
-            MessageBox.getBox("Test", "Test", Alert.AlertType.WARNING).show();
+
+    public void getCusInfo() throws SQLException {
+        try {
+            int cusID = Integer.parseInt(txtcusID.getText());
+            if (CustomerService.getCustomerByID(cusID) != null) {
+                Date cusDate = CustomerService.getCustomerByID(cusID).getCusBirthOfDate();
+                String cusName = CustomerService.getCustomerByID(cusID).getCusName();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                String cusDateString = dateFormat.format(cusDate);
+                lbCusDate.setText(cusDateString);
+                lbCusName.setText(cusName);
+                checkVoucher();
+                checkCus = true;
+            } else {
+                MessageBox.getBox("Warning", "Please input correct ID Customer", Alert.AlertType.WARNING).show();
+                txtcusID.clear();
+                lbCusDate.setText("");
+                lbCusName.setText("");
+                checkCus = false;
+            }
+        } catch (NumberFormatException| SQLException ex ) {
+            MessageBox.getBox("Warning", "Please input correct ID Customer", Alert.AlertType.WARNING).show();
+            lbCusDate.setText("");
+            lbCusName.setText("");
+            checkCus = false;
         }
+
     }
-    public void checkVoucher()
-    {
+    
+
+    public void checkVoucher() {
         String[] cusDate = this.lbCusDate.getText().split("-");
         String[] date = this.lbDate.getText().split("-");
         float totalAmount = getTotalAmount();
-        if(!lbCusDate.getText().isEmpty() && !lbDate.getText().isEmpty())
-        {
-            if(cusDate[0].compareTo(date[0]) == cusDate[1].compareTo(date[1]) && totalAmount >= 1000000)
-            {
+        if (!lbCusDate.getText().isEmpty() && !lbDate.getText().isEmpty()) {
+            if (cusDate[0].compareTo(date[0]) == cusDate[1].compareTo(date[1]) && totalAmount >= 1000000) {
                 voucher = 0.9f;
 
             } else {
                 voucher = 1f;
             }
-        } 
-             
+        }
+
     }
 }
