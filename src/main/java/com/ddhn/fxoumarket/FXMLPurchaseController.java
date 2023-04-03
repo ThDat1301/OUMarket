@@ -45,6 +45,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.DateStringConverter;
@@ -90,6 +91,8 @@ public class FXMLPurchaseController implements Initializable {
     private Label lbCusName;
     @FXML
     private Label lbCusDate;
+    @FXML
+    private HBox root;
     private float voucher = 1.f;
     private boolean checkCus = false;
 
@@ -309,7 +312,7 @@ public class FXMLPurchaseController implements Initializable {
                             OrderService.addOrder(new Order(date, totalPrice, moneyCustomer, employeeId), listOd, checkCus);
                             MessageBox.getBox("Success", "Checkout successfully!!!", Alert.AlertType.INFORMATION).show();
                         }
-                        
+                        reset();
                     } else if (result.get() == ButtonType.CANCEL) {
 
                     }
@@ -359,7 +362,6 @@ public class FXMLPurchaseController implements Initializable {
 
     }
     
-
     public void checkVoucher() {
         String[] cusDate = this.lbCusDate.getText().split("-");
         String[] date = this.lbDate.getText().split("-");
@@ -373,5 +375,15 @@ public class FXMLPurchaseController implements Initializable {
             }
         }
 
+    }
+  
+    public void reset() {
+        txtcusID.clear();
+        lbCusDate.setText("");
+        lbCusName.setText("");
+        this.cbProduct.getSelectionModel().selectFirst();
+        txtCustomerMoney.clear();
+        txtTotalAmount.clear();
+        tbProduct.getItems().clear();
     }
 }
