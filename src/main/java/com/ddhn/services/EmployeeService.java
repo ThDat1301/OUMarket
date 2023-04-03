@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -42,6 +43,7 @@ public class EmployeeService {
     public static boolean addEmployee(Employee e) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "INSERT INTO Employee(name, phone, username, password, branch_id) VALUES(?, ?, ?, ?, ?)";
+            e.setPassword(e.getPassword());
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setString(1, e.getName());
             stm.setString(2, e.getPhone());

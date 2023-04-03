@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,7 +37,7 @@ public class BranchService {
         return branchs;
     }
     
-    public static boolean addBranch(Branch b) throws SQLException {
+    public static boolean addBranch(Branch b){
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "INSERT INTO Branch(name, address) VALUES(?, ?)";
             PreparedStatement stm = conn.prepareCall(sql);
@@ -45,10 +47,15 @@ public class BranchService {
             int r = stm.executeUpdate();
             
             return r > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(BranchService.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
+       
+        
     }
     
-    public static boolean updateBranch(Branch b) throws SQLException {
+    public static boolean updateBranch(Branch b) {
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "UPDATE branch SET name = ?, address = ? WHERE id = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
@@ -57,16 +64,22 @@ public class BranchService {
             stm.setInt(3, b.getId());
             int r = stm.executeUpdate();   
             return r > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(BranchService.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
     }
     
-    public static boolean deleteBranch(int branchId) throws SQLException {
+    public static boolean deleteBranch(int branchId){
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "DELETE FROM branch WHERE id = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setInt(1, branchId);
             int r = stm.executeUpdate();   
             return r > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(BranchService.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
     }
     
