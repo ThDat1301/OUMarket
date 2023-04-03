@@ -238,7 +238,6 @@ public class FXMLEmployeeController implements Initializable {
                 Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to insert this field?",
                         Alert.AlertType.CONFIRMATION).showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    password = DigestUtils.md5Hex(password);
                     EmployeeService.addEmployee(new Employee(name, phone, username, password, branchId));
                     MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
                     renewTable();
