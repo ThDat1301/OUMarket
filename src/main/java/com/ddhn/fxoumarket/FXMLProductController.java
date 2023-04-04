@@ -144,13 +144,16 @@ public class FXMLProductController implements Initializable {
                 discountPrice = Float.parseFloat(txtDiscountPrice.getText());
                 active = rdAvaiYes.isSelected();
                     
-                Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to insert this field?",
+                Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to insert new product?",
                         Alert.AlertType.CONFIRMATION).showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    ProductService.addProduct(new Product(name, origin, price, discountPrice, active));
-                    MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
-                    renewTable();
-                    clearInput();
+                    if (ProductService.addProduct(new Product(name, origin, price, discountPrice, active))) {
+                        MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
+                        renewTable();
+                        clearInput();
+                    }
+                    else MessageBox.getBox("Error", "Something went wrong, please try again!", Alert.AlertType.ERROR).show();
+                    
                 }
                 else if (result.get() == ButtonType.CANCEL) {
 
@@ -195,21 +198,21 @@ public class FXMLProductController implements Initializable {
         }
     }
     
-    public void deleteProduct(ActionEvent e) throws SQLException {
-        try (Connection conn = JdbcUtils.getConn()) {
-            Product p = (Product) tbProduct.getItems().get(index);
-            int id = p.getId();
-            Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to delete this field?",
-                        Alert.AlertType.CONFIRMATION).showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    ProductService.deleteProduct(id);
-                    MessageBox.getBox("Success", "Deleted successfully!!!", Alert.AlertType.INFORMATION).show();
-                    renewTable();
-                    clearInput();
-                }
-                else if (result.get() == ButtonType.CANCEL) {
-
-                }
-        }
-    }
+//    public void deleteProduct(ActionEvent e) throws SQLException {
+//        try (Connection conn = JdbcUtils.getConn()) {
+//            Product p = (Product) tbProduct.getItems().get(index);
+//            int id = p.getId();
+//            Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to delete this field?",
+//                        Alert.AlertType.CONFIRMATION).showAndWait();
+//                if (result.get() == ButtonType.OK) {
+//                    ProductService.deleteProduct(id);
+//                    MessageBox.getBox("Success", "Deleted successfully!!!", Alert.AlertType.INFORMATION).show();
+//                    renewTable();
+//                    clearInput();
+//                }
+//                else if (result.get() == ButtonType.CANCEL) {
+//
+//                }
+//        }
+//    }
 }

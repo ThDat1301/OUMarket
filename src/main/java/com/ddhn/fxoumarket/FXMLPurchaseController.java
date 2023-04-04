@@ -279,6 +279,10 @@ public class FXMLPurchaseController implements Initializable {
     }
 
     public void addOrder(ActionEvent e) throws SQLException {
+        if (tbProduct.getItems().size() < 1){
+            MessageBox.getBox("Error", "Please add some product to cart!", Alert.AlertType.ERROR).show();
+            return;
+        }
         if (!txtTotalAmount.getText().trim().isEmpty() && !txtCustomerMoney.getText().trim().isEmpty()) {
             if (Float.parseFloat(txtCustomerMoney.getText()) >= Float.parseFloat(txtTotalAmount.getText())) {
                 try (Connection conn = JdbcUtils.getConn()) {

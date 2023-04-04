@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: oumarketdb
+-- Host: localhost    Database: oumarketdb
 -- ------------------------------------------------------
--- Server version	8.0.32
+-- Server version	8.0.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -24,10 +24,11 @@ DROP TABLE IF EXISTS `branch`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `branch` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +37,7 @@ CREATE TABLE `branch` (
 
 LOCK TABLES `branch` WRITE;
 /*!40000 ALTER TABLE `branch` DISABLE KEYS */;
-INSERT INTO `branch` VALUES (5,'Vo Van Tan','97 Vo Van Tan, district 3, Ho Chi Minh city'),(6,'Nguyen Kiem','371 Nguyen Kiem, Go Vap district, Ho Chi Minh city'),(12,'Tan Ky Tan Quy','198 Tan Ky Tan Quy, Binh Tan district, Ho Chi Minh city'),(20,'Vuon Lai ','14 Vuon Lai, Tan Phu district, Ho Chi Minh city'),(23,'Tran Quoc Tuan','35 Tran Quoc Tuan, Go Vap district, Ho Chi Minh city'),(24,'Le Quang TUan','182 Le Quang Dinh, Go Vap district, Ho Chi Minh city'),(28,'Nguyen Van Dau','1 Nguyen Van Dau');
+INSERT INTO `branch` VALUES (1,'Vo Van Tan','97 Vo Van Tan, district 3, Ho Chi Minh city'),(2,'Nguyen Kiem','371 Nguyen Kiem, Go Vap district, Ho Chi Minh city'),(3,'Tan Ky Tan Quy','198 Tan Ky Tan Quy, Binh Tan district, Ho Chi Minh city'),(4,'Vuon Lai ','14 Vuon Lai, Tan Phu district, Ho Chi Minh city'),(5,'Tran Quoc Tuan','35 Tran Quoc Tuan, Go Vap district, Ho Chi Minh city'),(6,'Le Quang Dinh','182 Le Quang Dinh, Go Vap district, Ho Chi Minh city'),(7,'Nguyen Van Dau','1 Nguyen Van Dau'),(8,'Nguyen Thi Nho','30 Nguyen Thi Nho, Tan Binh district,Ho Chi Minh city');
 /*!40000 ALTER TABLE `branch` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,7 +53,7 @@ CREATE TABLE `customer` (
   `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phone` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `dateOfBirth` date DEFAULT NULL,
-  `personalID` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `personalID` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -63,7 +64,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'Lê Minh Đức','0366004732','2002-04-06','352598749'),(6,'Trương Trọng Nghĩa','0123456789','2002-04-18','0123456879');
+INSERT INTO `customer` VALUES (1,'Lê Minh Đức','0366004732','2002-04-06','352598749'),(2,'Trương Trọng Nghĩa','0123456789','2002-04-18','0123456879');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,16 +77,16 @@ DROP TABLE IF EXISTS `employee`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `username` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `branch_id` int NOT NULL,
   PRIMARY KEY (`id`,`branch_id`),
   UNIQUE KEY `username_UNIQUE` (`username`),
   KEY `branch_employee` (`branch_id`),
   CONSTRAINT `branch_employee` FOREIGN KEY (`branch_id`) REFERENCES `branch` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +95,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES (1,'Truong Thanh Dat','0123456789','thdat','996009f2374006606f4c0b0fda878af1',5),(2,'Le Minh Duc','0123457893','minhduc','a47e177c35b15f15387bfb234f661ea7',6),(3,'Tran Quoc Hy','0123124124','qhy','202cb962ac59075b964b07152d234b70',5);
+INSERT INTO `employee` VALUES (1,'Truong Thanh Dat','0123456789','thdat','996009f2374006606f4c0b0fda878af1',12),(2,'Le Minh Duc','0123457893','minhduc','a47e177c35b15f15387bfb234f661ea7',6),(3,'Tran Quoc Hy','0123124124','qhy','202cb962ac59075b964b07152d234b70',5),(13,'Truong Trong Nghia','01234567899','trongnghia','996009f2374006606f4c0b0fda878af1',12),(16,'Tester','123','test','202cb962ac59075b964b07152d234b70',24);
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -107,9 +108,9 @@ DROP TABLE IF EXISTS `order`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `date` date DEFAULT NULL,
-  `totalPrice` float DEFAULT NULL,
-  `moneyCus` float DEFAULT NULL,
+  `date` date NOT NULL,
+  `totalPrice` float NOT NULL,
+  `moneyCus` float NOT NULL,
   `customer_id` int DEFAULT NULL,
   `employee_id` int NOT NULL,
   PRIMARY KEY (`id`,`employee_id`),
@@ -117,7 +118,7 @@ CREATE TABLE `order` (
   KEY `order_cus_idx` (`customer_id`),
   CONSTRAINT `order_cus` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
   CONSTRAINT `order_emp` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +127,7 @@ CREATE TABLE `order` (
 
 LOCK TABLES `order` WRITE;
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` VALUES (1,'2023-03-25',250,500,NULL,1),(2,'2023-03-26',260,300,NULL,2),(3,'2020-03-02',20,30,NULL,3),(4,'2020-02-02',2,3,NULL,1),(5,'2023-03-23',12,22,NULL,1),(6,'2023-03-23',1487,2000,NULL,1),(7,'2023-03-01',45.6,50,NULL,3),(8,'2023-03-22',15.1,17,NULL,1),(9,'2023-03-01',13,14,NULL,1),(10,'2023-02-28',4.1,5,NULL,1),(11,'2023-03-16',17.45,20,NULL,1),(12,'2023-03-25',392.2,400,NULL,3),(13,'2023-04-08',243.6,2000,NULL,1),(14,'2023-03-25',2000,20000,NULL,1),(15,'2023-04-01',122,444,NULL,1);
+INSERT INTO `order` VALUES (1,'2023-03-25',250,500,NULL,1),(2,'2023-03-26',260,300,NULL,2),(3,'2020-03-02',20,30,NULL,3),(4,'2020-02-02',2,3,NULL,1),(5,'2023-03-23',12,22,NULL,1),(6,'2023-03-23',1487,2000,NULL,1),(7,'2023-03-01',45.6,50,NULL,3),(8,'2023-03-22',15.1,17,NULL,1),(9,'2023-03-01',13,14,NULL,1),(10,'2023-02-28',4.1,5,NULL,1),(11,'2023-03-16',17.45,20,NULL,1),(12,'2023-03-25',392.2,400,NULL,3),(13,'2023-04-08',243.6,2000,NULL,1),(14,'2023-03-25',2000,20000,NULL,1),(15,'2023-04-01',122,444,NULL,1),(16,'2023-04-03',57,60,NULL,2),(17,'2023-04-03',121.7,122,NULL,2),(19,'2023-04-03',137,140,1,2),(20,'2023-04-03',180,181,NULL,2),(21,'2023-04-03',204.8,205,6,2),(22,'2023-04-03',1230,1230,6,2),(23,'2023-04-03',132,133,NULL,2),(24,'2023-04-04',6.6,7,NULL,2);
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -139,7 +140,7 @@ DROP TABLE IF EXISTS `order_detail`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order_detail` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `quantity` float DEFAULT NULL,
+  `quantity` float NOT NULL,
   `order_id` int NOT NULL,
   `product_id` int NOT NULL,
   PRIMARY KEY (`id`,`product_id`,`order_id`),
@@ -147,7 +148,7 @@ CREATE TABLE `order_detail` (
   KEY `orderDetail_order_idx` (`order_id`),
   CONSTRAINT `orderDetail_order` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`),
   CONSTRAINT `orderDetail_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,7 +157,7 @@ CREATE TABLE `order_detail` (
 
 LOCK TABLES `order_detail` WRITE;
 /*!40000 ALTER TABLE `order_detail` DISABLE KEYS */;
-INSERT INTO `order_detail` VALUES (1,1,11,15),(2,1,11,28),(3,1,11,23),(4,1,11,24),(5,100,12,22),(6,12,12,23),(7,1,13,16),(8,4,13,17),(9,1,13,5),(10,155,13,18),(11,1,14,32),(12,122,15,33);
+INSERT INTO `order_detail` VALUES (5,100,12,22),(6,12,12,23),(7,1,13,16),(8,4,13,17),(9,1,13,5),(10,155,13,18),(11,1,14,32),(12,122,15,33),(13,10,16,1),(14,1,17,15),(15,10,17,5),(16,10,19,1),(17,10,19,2),(18,100,20,15),(19,10,20,16),(20,112,21,15),(21,11,21,16),(22,1,21,17),(23,100,22,1),(24,100,22,4),(25,11,23,5),(26,1,24,4);
 /*!40000 ALTER TABLE `order_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,12 +170,13 @@ DROP TABLE IF EXISTS `product`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `origin` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `price` float DEFAULT NULL,
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `origin` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` float NOT NULL,
   `discountPrice` float DEFAULT NULL,
-  `active` tinyint DEFAULT '1',
-  PRIMARY KEY (`id`)
+  `active` tinyint NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -184,7 +186,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'Red Carrot','Vietnam',5.7,NULL,1),(2,'Eggplant','Vietnam',8,NULL,1),(3,'Banana','Malaysia',4.3,NULL,1),(4,'Tomato','Vietnam',6.6,NULL,1),(5,'Green Lemon','Vietnam',12,NULL,1),(15,'Pocari Sweat Drink 500ml','Japan',1.7,NULL,1),(16,'Dasani Drinking Water 600ml','Vietnam',1,NULL,1),(17,'Cheers Original Beer Can 330ml','Thailand',3.4,NULL,1),(18,'Fanta Orange 320ml','Vietnam',1.4,NULL,1),(19,'Monster Energy Zero Ultra 355ml','Netherland',3.4,NULL,1),(20,'MISTER POTATO BBQ 75G','Malaysia',2,NULL,1),(21,'Ding Dong Hot & Spicy (Red)100g','Philippines ',1.8,NULL,1),(22,'MISTER POTATO -ORIGINAL-130GM','Malaysia',3.1,NULL,1),(23,'Lays Cheddar & Sour Cream 170g','United States',6.85,NULL,1),(24,'Twisties Chipster Potato Chips - Sour Cream & Onion 130g','Malaysia',4.9,NULL,1),(28,'a','a',4,12,1),(31,'a','bc',123,1,0),(32,'b','bbb',2000,500,1),(33,'c','ccc',13,1,1);
+INSERT INTO `product` VALUES (1,'Red Carrot','Vietnam',5.7,NULL,1),(2,'Eggplant','Vietnam',8,NULL,1),(3,'Banana','Malaysia',4.3,NULL,1),(4,'Tomato','Vietnam',6.6,NULL,1),(5,'Green Lemon','Vietnam',12,NULL,1),(15,'Pocari Sweat Drink 500ml','Japan',1.7,NULL,1),(16,'Dasani Drinking Water 600ml','Vietnam',1,NULL,1),(17,'Cheers Original Beer Can 330ml','Thailand',3.4,NULL,1),(18,'Fanta Orange 320ml','Vietnam',1.4,NULL,1),(19,'Monster Energy Zero Ultra 355ml','Netherland',3.4,NULL,1),(20,'MISTER POTATO BBQ 75G','Malaysia',2,NULL,1),(21,'Ding Dong Hot & Spicy (Red)100g','Philippines ',1.8,NULL,1),(22,'MISTER POTATO -ORIGINAL-130GM','Malaysia',3.1,NULL,1),(23,'Lays Cheddar & Sour Cream 170g','United States',6.85,NULL,1),(24,'Twisties Chipster Potato Chips - Sour Cream & Onion 130g','Malaysia',4.9,NULL,1);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -197,4 +199,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-30 15:12:21
+-- Dump completed on 2023-04-04 18:33:29

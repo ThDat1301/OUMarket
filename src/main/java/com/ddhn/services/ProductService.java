@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -52,6 +54,9 @@ public class ProductService {
             int r = stm.executeUpdate();
             return r > 0;
            
+        } catch (SQLException ex) {
+            Logger.getLogger(BranchService.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
     }
     
@@ -71,16 +76,16 @@ public class ProductService {
         }
     }
     
-    public static boolean deleteProduct(int id) throws SQLException {
-        try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "DELETE FROM product  WHERE id=?";
-            PreparedStatement stm = conn.prepareCall(sql);
-            stm.setInt(1, id);
-            
-            int r = stm.executeUpdate();
-            return r > 0;
-        }
-    }
+//    public static boolean deleteProduct(int id) throws SQLException {
+//        try (Connection conn = JdbcUtils.getConn()) {
+//            String sql = "DELETE FROM product  WHERE id=?";
+//            PreparedStatement stm = conn.prepareCall(sql);
+//            stm.setInt(1, id);
+//            
+//            int r = stm.executeUpdate();
+//            return r > 0;
+//        }
+//    }
     
     public static Product getProductById(int productId) throws SQLException {
         int id = 0;

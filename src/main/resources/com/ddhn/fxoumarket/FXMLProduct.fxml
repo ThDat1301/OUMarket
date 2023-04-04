@@ -54,7 +54,6 @@
                <children>
                   <Button fx:id="btnInsert" mnemonicParsing="false" onAction="#addProduct" styleClass="btn-select" text="Insert" />
                   <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#updateProduct" styleClass="btn-select" text="Update" />
-                  <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteProduct" styleClass="btn-select" text="Delete" />
                </children>
             </HBox>
          </children>

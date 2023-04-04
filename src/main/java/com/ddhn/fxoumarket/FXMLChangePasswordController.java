@@ -58,7 +58,7 @@ public class FXMLChangePasswordController implements Initializable {
     public void changePassword(ActionEvent e) throws SQLException {
         Employee emp = EmployeeService.getEmpById(getEmplId());
         String oldPassword = DigestUtils.md5Hex(txtOldPass.getText());
-        if (txtOldPass.getText().isEmpty() || txtNewPass.getText().isEmpty() || txtConfirm.getText().isEmpty()) {
+        if (txtNewPass.getText().isEmpty() || txtConfirm.getText().isEmpty()) {
             MessageBox.getBox("Error", "Please complete all fields before change password!!!", Alert.AlertType.ERROR).show();
         } else {
             if (oldPassword.equals(emp.getPassword())) {

@@ -222,7 +222,7 @@ public class FXMLEmployeeController implements Initializable {
     
     public void addEmployee(ActionEvent e) throws SQLException {
         if (txtName.getText().trim().isEmpty() || txtPhone.getText().trim().isEmpty()
-                || txtUsername.getText().trim().isEmpty() || txtPassword.getText().trim().isEmpty()) {
+                || txtUsername.getText().trim().isEmpty()) {
             MessageBox.getBox("Error", "Please complete all fields before insert!!!", Alert.AlertType.ERROR).show();
 
         } else {
@@ -235,17 +235,18 @@ public class FXMLEmployeeController implements Initializable {
                 username = txtUsername.getText();
                 password = txtPassword.getText();
                 branchId = cbBranch.getSelectionModel().getSelectedItem().getId();
-                Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to insert this field?",
+                Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to insert new employee?",
                         Alert.AlertType.CONFIRMATION).showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    EmployeeService.addEmployee(new Employee(name, phone, username, password, branchId));
-                    MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
-                    renewTable();
-                    txtName.clear();
-                    txtPhone.clear();
-                    txtUsername.clear();
-                    txtPassword.clear();
-                    cbBranch.getSelectionModel().selectFirst();
+                    if (EmployeeService.addEmployee(new Employee(name, phone, username, password, branchId))) {
+                        MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
+                        renewTable();
+                        txtName.clear();
+                        txtPhone.clear();
+                        txtUsername.clear();
+                        txtPassword.clear();
+                        cbBranch.getSelectionModel().selectFirst();
+                    } else MessageBox.getBox("Error", "Something went wrong, please try again!", Alert.AlertType.ERROR).show();
                 } else if (result.get() == ButtonType.CANCEL) {
 
                 }

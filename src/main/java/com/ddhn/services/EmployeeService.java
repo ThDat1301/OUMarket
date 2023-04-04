@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -54,6 +56,10 @@ public class EmployeeService {
             int r = stm.executeUpdate();
             
             return r > 0;
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(BranchService.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
     }
     

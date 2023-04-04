@@ -54,20 +54,20 @@ public class FXMLBranchController implements Initializable {
     private TextField txtAddress;
 
     int index = -1;
-    public void loadTableView() throws SQLException
-    {
+
+    public void loadTableView() throws SQLException {
         idCol = new TableColumn("ID");
         idCol.setCellValueFactory(new PropertyValueFactory("id"));
         idCol.setPrefWidth(37);
-        
+
         nameCol = new TableColumn("Name");
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
         nameCol.setPrefWidth(200);
-        
+
         addressCol = new TableColumn("Branch");
         addressCol.setCellValueFactory(new PropertyValueFactory("address"));
         addressCol.setPrefWidth(400);
-        
+
         this.branchTable.getColumns().addAll(idCol, nameCol, addressCol);
         List<Branch> branch = BranchService.getBranchs();
         this.branchTable.getItems().clear();
@@ -97,14 +97,18 @@ public class FXMLBranchController implements Initializable {
                 name = txtName.getText();
                 address = txtAddress.getText();
 
-                Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to update this field?",
+                Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to insert new branch?",
                         Alert.AlertType.CONFIRMATION).showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    BranchService.addBranch(new Branch(name, address));
-                    txtName.clear();
-                    txtAddress.clear();
-                    loadTableView();
-                    MessageBox.getBox("Success", "Updated successfully!!!", Alert.AlertType.INFORMATION).show();
+                    if (BranchService.addBranch(new Branch(name, address))) {
+                        txtName.clear();
+                        txtAddress.clear();
+                        loadTableView();
+                        MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
+                    } else {
+                        MessageBox.getBox("Error", "Something went wrong, please try again!", Alert.AlertType.ERROR).show();
+                    }
+
                 } else if (result.get() == ButtonType.CANCEL) {
 
                 }
