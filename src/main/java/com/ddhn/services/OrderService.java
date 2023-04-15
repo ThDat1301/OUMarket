@@ -56,6 +56,7 @@ public class OrderService {
                         orderId = key.getInt(1);
                     } else {
                         conn.rollback();
+                        return -1;
                     }
                 }
                 stm.close();
@@ -67,6 +68,7 @@ public class OrderService {
                     stm.executeUpdate();
                     stm.close();
                 }
+                return orderId;
             }
             else {
                 int orderId = -1;
@@ -86,6 +88,7 @@ public class OrderService {
                 }
                 else {
                     conn.rollback();
+                    return -1;
                 }
             }
             stm.close();
@@ -97,8 +100,9 @@ public class OrderService {
                 stm.executeUpdate();
                 stm.close();
             }
+            return orderId;
+
             }
-            return -1;
         }
     }
 }

@@ -147,7 +147,7 @@ public class FXMLProductController implements Initializable {
                 Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to insert new product?",
                         Alert.AlertType.CONFIRMATION).showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    if (ProductService.addProduct(new Product(name, origin, price, discountPrice, active))) {
+                    if (ProductService.addProduct(new Product(name, origin, price, discountPrice, active))!= -1) {
                         MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
                         renewTable();
                         clearInput();

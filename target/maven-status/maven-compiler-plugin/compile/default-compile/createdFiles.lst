@@ -1,4 +1,5 @@
 com\ddhn\services\EmployeeService.class
+com\ddhn\fxoumarket\FXMLCustomerController$2.class
 com\ddhn\pojo\Employee.class
 com\ddhn\fxoumarket\FXMLMainController.class
 com\ddhn\fxoumarket\App.class
@@ -6,7 +7,10 @@ com\ddhn\services\MainService.class
 module-info.class
 com\ddhn\conf\JdbcUtils.class
 com\ddhn\pojo\Product.class
+com\ddhn\fxoumarket\FXMLChangePasswordController.class
+com\ddhn\services\BranchService.class
 com\ddhn\fxoumarket\FXMLLoginController.class
+com\ddhn\fxoumarket\FXMLCustomerController$1.class
 com\ddhn\pojo\Customer.class
 com\ddhn\services\OrderService.class
 com\ddhn\pojo\OrderDetails.class
@@ -14,6 +18,7 @@ com\ddhn\fxoumarket\FXMLProductController.class
 com\ddhn\fxoumarket\FXMLPurchaseController.class
 com\ddhn\services\ProductService.class
 com\ddhn\pojo\Branch.class
+com\ddhn\fxoumarket\FXMLCustomerController.class
 com\ddhn\services\LoginService.class
 com\ddhn\fxoumarket\FXMLBranchController.class
 com\ddhn\fxoumarket\FXMLPurchaseController$1$1.class

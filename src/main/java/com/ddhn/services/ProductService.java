@@ -41,7 +41,8 @@ public class ProductService {
         return products;
     }
     
-    public static boolean addProduct(Product p) throws SQLException {
+    public static int addProduct(Product p) throws SQLException {
+        int productId = -1;
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "INSERT INTO product(name, origin, price, discountPrice, active) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement stm = conn.prepareCall(sql);
@@ -51,12 +52,19 @@ public class ProductService {
             stm.setFloat(4, p.getDiscountPrice());
             stm.setBoolean(5, p.isActive());
             
-            int r = stm.executeUpdate();
-            return r > 0;
-           
+            stm.executeUpdate();
+            try (ResultSet key = stm.getGeneratedKeys()) {
+                    if (key.next()) {
+                        productId = key.getInt(1);
+                    } else {
+                        conn.rollback();
+                    }
+                }
         } catch (SQLException ex) {
             Logger.getLogger(BranchService.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+        }
+        finally {
+            return productId;
         }
     }
     
