@@ -43,6 +43,9 @@ public class ProductService {
     
     public static int addProduct(Product p) throws SQLException {
         int productId = -1;
+        if (p.getPrice() <= 0 || p.getDiscountPrice() <= 0){
+            return productId;
+        }
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "INSERT INTO product(name, origin, price, discountPrice, active) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement stm = conn.prepareCall(sql);
@@ -69,6 +72,9 @@ public class ProductService {
     }
     
     public static boolean updateProduct(Product p) throws SQLException {
+        if (p.getPrice() <= 0 || p.getDiscountPrice() <= 0){
+            return false;
+        }
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "UPDATE product SET name=?, origin=?, price=?, discountPrice=?, active=? WHERE id=?";
             PreparedStatement stm = conn.prepareCall(sql);
