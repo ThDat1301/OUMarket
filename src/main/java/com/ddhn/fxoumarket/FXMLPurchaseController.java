@@ -5,10 +5,14 @@
 package com.ddhn.fxoumarket;
 
 import com.ddhn.conf.JdbcUtils;
+import static com.ddhn.fxoumarket.FXMLLoginController.currentEmployeeId;
+import com.ddhn.pojo.Branch;
 import com.ddhn.pojo.Cart;
+import com.ddhn.pojo.Employee;
 import com.ddhn.pojo.Order;
 import com.ddhn.pojo.OrderDetails;
 import com.ddhn.pojo.Product;
+import com.ddhn.services.BranchService;
 import com.ddhn.services.EmployeeService;
 import com.ddhn.services.OrderService;
 import com.ddhn.services.ProductService;
@@ -28,11 +32,20 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -46,6 +59,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.DateStringConverter;
@@ -93,6 +112,7 @@ public class FXMLPurchaseController implements Initializable {
     private Label lbCusDate;
     @FXML
     private HBox root;
+
     private float voucher = 1.f;
     private boolean checkCus = false;
 
@@ -198,7 +218,7 @@ public class FXMLPurchaseController implements Initializable {
                             Cart data = getTableView().getItems().get(getIndex());
                             tbProduct.getItems().remove(data);
                             checkVoucher();
-                            txtTotalAmount.setText(String.valueOf(getTotalAmount() * voucher));
+                            txtTotalAmount.setText(String.format("%.2f", getTotalAmount() * voucher));
 
                         });
                     }
@@ -256,7 +276,7 @@ public class FXMLPurchaseController implements Initializable {
             tbProduct.getItems().add(item);
         }
         checkVoucher();
-        txtTotalAmount.setText(String.valueOf(getTotalAmount() * voucher));
+        txtTotalAmount.setText(String.format("%.2f", getTotalAmount() * voucher));
 
     }
 
@@ -279,7 +299,7 @@ public class FXMLPurchaseController implements Initializable {
     }
 
     public void addOrder(ActionEvent e) throws SQLException {
-        if (tbProduct.getItems().size() < 1){
+        if (tbProduct.getItems().size() < 1) {
             MessageBox.getBox("Error", "Please add some product to cart!", Alert.AlertType.ERROR).show();
             return;
         }
@@ -311,10 +331,11 @@ public class FXMLPurchaseController implements Initializable {
                             OrderService.addOrder(new Order(date, totalPrice, moneyCustomer, customerId, employeeId), listOd, checkCus);
                             MessageBox.getBox("Success", "Checkout successfully!!!", Alert.AlertType.INFORMATION).show();
                             checkCus = false;
-                        }
-                        else {
+                            print();
+                        } else {
                             OrderService.addOrder(new Order(date, totalPrice, moneyCustomer, employeeId), listOd, checkCus);
                             MessageBox.getBox("Success", "Checkout successfully!!!", Alert.AlertType.INFORMATION).show();
+                            print();
                         }
                         reset();
                     } else if (result.get() == ButtonType.CANCEL) {
@@ -338,6 +359,120 @@ public class FXMLPurchaseController implements Initializable {
         return currentDate.format(formatter);
     }
 
+    public void print() throws SQLException {
+        VBox VbPrint = new VBox(10);
+        Employee emp = EmployeeService.getEmpById(currentEmployeeId);
+        Branch br = BranchService.getBranchById(emp.getBranch_id());
+        ObservableList<Cart> listProduct = FXCollections.observableArrayList();
+        for (Cart c : tbProduct.getItems()) {
+            listProduct.add(c);
+        }
+
+        VbPrint.getChildren().add(new Label(br.getAddress()));
+        VbPrint.getChildren().add(new Label("Bill"));
+        VbPrint.getChildren().add(new Label("Employee: " + emp.getName()));
+        VbPrint.getChildren().add(new Label("---------------------------------------------------------------------"));
+//        Label col1 = new Label("Name");
+//        Label col2 = new Label("Price");
+//        Label col3 = new Label("Discount Pricec");
+//        Label col4 = new Label("Quantity");
+//        Label col5 = new Label("Ammount");
+//        HBox row = new HBox(20);
+//        row.getChildren().addAll(col1, col2, col3, col4, col5);
+//        print.getChildren().add(row);
+//        for (Cart c : listProduct) {
+//            Label col6 = new Label(c.getProductName());
+//            Label col7 = new Label(String.valueOf(c.getProductPrice()));
+//            Label col8 = new Label(String.valueOf(c.getProductDiscountPrice()));
+//            Label col9 = new Label(String.valueOf(c.getProductQuantity()));
+//            Label col10 = new Label(String.valueOf(c.getProductAmount()));
+//            if (c.getProductDiscountPrice() != 0) {
+//                col7.setStyle("-fx-strikethrough: true;");
+//            }
+//            HBox rowC = new HBox(20);
+//            rowC.getChildren().addAll(col6, col7, col8, col9, col10);
+//            print.getChildren().add(rowC);
+//        }
+
+        TableColumn colProductName = new TableColumn("Name");
+        colProductName.setCellValueFactory(new PropertyValueFactory("productName"));
+        colProductName.setPrefWidth(200);
+
+        TableColumn colProductPrice = new TableColumn("Price");
+        colProductPrice.setCellValueFactory(new PropertyValueFactory("productPrice"));
+        colProductPrice.setPrefWidth(65);
+
+        TableColumn colProductDiscountPrice = new TableColumn("Discount price");
+        colProductDiscountPrice.setCellValueFactory(new PropertyValueFactory("productDiscountPrice"));
+        colProductDiscountPrice.setPrefWidth(70);
+
+        TableColumn colQuantity = new TableColumn("Quantity");
+        colQuantity.setCellValueFactory(new PropertyValueFactory("productQuantity"));
+        colQuantity.setPrefWidth(75);
+
+        TableColumn colAmount = new TableColumn("Amount");
+        colAmount.setCellValueFactory(new PropertyValueFactory("productAmount"));
+        colAmount.setPrefWidth(70);
+
+        TableView<Cart> tvBill = new TableView(listProduct);
+
+//        FilteredList<Cart> filteredData = new FilteredList<>(listProduct);
+//        filteredData.setPredicate(p -> true);
+//        tvBill.setItems(filteredData);
+        
+        tvBill.setFixedCellSize(25);
+        tvBill.prefHeightProperty().bind(Bindings.size(tvBill.getItems()).multiply(tvBill.getFixedCellSize()).add(30));
+
+        
+        tvBill.getColumns().addAll(colProductName, colProductPrice, colProductDiscountPrice, colQuantity, colAmount);
+        VbPrint.getChildren().add(tvBill);
+        
+        VbPrint.getChildren().add(new Label("---------------------------------------------------------------------"));
+
+        HBox hbTotal = new HBox();
+        Label lbTTotalAmount = new Label("Total Amount: ");
+        Label lbTotalAmount = new Label(txtTotalAmount.getText());
+        lbTTotalAmount.setAlignment(Pos.CENTER);
+        lbTTotalAmount.setMaxWidth(500);
+        hbTotal.getChildren().addAll(lbTTotalAmount, lbTotalAmount);
+        hbTotal.setFillHeight(true);
+        HBox.setHgrow(hbTotal.getChildren().get(0), Priority.NEVER);
+        hbTotal.setAlignment(Pos.CENTER);
+        VbPrint.getChildren().add(hbTotal);
+        
+        HBox hbCustomerPay = new HBox();
+        Label lbTCustomerPay = new Label("Payment: ");
+        Label lbCustomerPay = new Label(txtCustomerMoney.getText());
+        lbTCustomerPay.setAlignment(Pos.CENTER);
+        lbTCustomerPay.setMaxWidth(500);
+        hbCustomerPay.getChildren().addAll(lbTCustomerPay, lbCustomerPay);
+        hbCustomerPay.setFillHeight(true);
+        HBox.setHgrow(hbCustomerPay.getChildren().get(0), Priority.NEVER);
+        hbCustomerPay.setAlignment(Pos.CENTER);
+        VbPrint.getChildren().add(hbCustomerPay);
+        
+        HBox hbChange = new HBox();
+        Label lbTChange = new Label("Change: ");
+        Label lbChange = new Label(String.format("%.2f",Float.parseFloat(txtCustomerMoney.getText()) - Float.parseFloat(txtTotalAmount.getText())));
+        lbTChange.setAlignment(Pos.CENTER);
+        lbTChange.setMaxWidth(500);
+        hbChange.getChildren().addAll(lbTChange, lbChange);
+        hbChange.setFillHeight(true);
+        HBox.setHgrow(hbChange.getChildren().get(0), Priority.NEVER);
+        VbPrint.getChildren().add(hbChange);
+        hbChange.setAlignment(Pos.CENTER);
+
+        VbPrint.setAlignment(Pos.CENTER);
+
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job != null) {
+            boolean success = job.printPage(VbPrint);
+            if (success) {
+                job.endJob();
+            }
+        }
+    }
+
     public void getCusInfo() throws SQLException {
         try {
             int cusID = Integer.parseInt(txtcusID.getText());
@@ -357,7 +492,7 @@ public class FXMLPurchaseController implements Initializable {
                 lbCusName.setText("");
                 checkCus = false;
             }
-        } catch (NumberFormatException| SQLException ex ) {
+        } catch (NumberFormatException | SQLException ex) {
             MessageBox.getBox("Warning", "Please input correct ID Customer", Alert.AlertType.WARNING).show();
             lbCusDate.setText("");
             lbCusName.setText("");
@@ -365,7 +500,7 @@ public class FXMLPurchaseController implements Initializable {
         }
 
     }
-    
+
     public void checkVoucher() {
         String[] cusDate = this.lbCusDate.getText().split("-");
         String[] date = this.lbDate.getText().split("-");
@@ -380,7 +515,7 @@ public class FXMLPurchaseController implements Initializable {
         }
 
     }
-  
+
     public void reset() {
         txtcusID.clear();
         lbCusDate.setText("");
@@ -390,4 +525,5 @@ public class FXMLPurchaseController implements Initializable {
         txtTotalAmount.clear();
         tbProduct.getItems().clear();
     }
+
 }
