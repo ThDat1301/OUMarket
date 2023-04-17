@@ -5,6 +5,8 @@
 package com.ddhn.pojo;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 /**
  *
  * @author Nome
@@ -33,6 +35,20 @@ public class Customer {
         this.CusPhone = phone;
         this.CusBirthOfDate = dateOfBirth;
         this.CusPersonalID = personalID;
+    }
+    
+    public Customer(String name, String phone, String dateOfBirth, String personalID)
+    {
+        this.CusName = name;
+        this.CusPhone = phone;
+        this.CusPersonalID = personalID;
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            this.CusBirthOfDate = (Date) formatter.parse(dateOfBirth);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

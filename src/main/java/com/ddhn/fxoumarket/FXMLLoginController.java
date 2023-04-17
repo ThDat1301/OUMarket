@@ -53,6 +53,13 @@ public class FXMLLoginController implements Initializable {
             stage.show();
             ((Node)e.getSource()).getScene().getWindow().hide();
         } 
+        else 
+        {
+            MessageBox.getBox("Warning", "Username or password incorrect", Alert.AlertType.INFORMATION).show();
+            txtUsername.clear();
+            txtPassword.clear();
+            txtUsername.requestFocus();
+        }
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
