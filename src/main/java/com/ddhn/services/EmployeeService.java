@@ -121,4 +121,8 @@ public class EmployeeService {
         }
         return new Employee(id, name, phone, username, password, branch_id);
     } 
+
+    public static String getBranchByUsername(String username) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
