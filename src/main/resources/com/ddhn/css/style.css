@@ -5,6 +5,7 @@
 
 * {
     -fx-font-family: Tahoma;
+    
 }
 
 /*Login*/
@@ -27,18 +28,20 @@
 
 /*Main*/
 .hb-main-body {
-    -fx-background-color: #7EE6DE;
+    /*-fx-background-color:  #020082;*/
+    -fx-background-color: #1b202c;
 }
 .vb-sidebar {
-    -fx-background-color: #4FC8DA;
+    /*-fx-background-color: #1873D3;*/
+    -fx-background-color: #252b3e;
 }
 .vb-title Label{
     -fx-padding: 10;
-    -fx-background-color: #4A87E2;
+    -fx-background-color: #eb5757;
     -fx-text-fill: #fff;
 }
 .vb-sidebar .btn-select {
-    -fx-background-color: #3A6AD0;
+    -fx-background-color: #eb5757;
     -fx-text-fill: #fff;
     -fx-padding: 10 20 10 20;
     -fx-font-size: 16;
@@ -48,6 +51,13 @@
 {
     -fx-font-size: 16;
     -fx-opacity: 0.6;
+}
+.bg-white{
+    -fx-background-color: #fff;
+}
+.tableView-color{
+    -fx-background-color: #1b202c;
+    -fx-text-fill: #fff;
 }
 
 /*End Main*/
@@ -77,7 +87,7 @@ HBox{
 
 HBox.hb-select {
     -fx-padding: 10 0 10 0;
-    -fx-alignment: CENTER;
+    -fx-alignment:  CENTER_RIGHT;
 }
 .mainFxmlClass {
     
