@@ -57,6 +57,7 @@ public class FXMLBranchController implements Initializable {
 
     public void loadTableView() throws SQLException {
         idCol = new TableColumn("ID");
+        idCol.setId("headerID");
         idCol.setCellValueFactory(new PropertyValueFactory("id"));
         idCol.setPrefWidth(37);
 

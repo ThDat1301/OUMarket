@@ -22,9 +22,9 @@
          <children>
             <VBox prefHeight="249.0" prefWidth="366.0">
                <children>
-                  <Label text="Purchase Information ">
+                  <Label text="Purchase Information " textFill="WHITE">
                      <font>
-                        <Font size="20.0" />
+                        <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
                   <GridPane hgap="10.0" vgap="10.0">
@@ -40,38 +40,38 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Today's Date">
+                        <Label text="Today's Date" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label text="Customer's ID" GridPane.rowIndex="1">
+                        <Label text="Customer's ID" textFill="WHITE" GridPane.rowIndex="1">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lbDate" prefHeight="30.0" prefWidth="262.0" GridPane.columnIndex="1">
+                        <Label fx:id="lbDate" prefHeight="30.0" prefWidth="262.0" textFill="WHITE" GridPane.columnIndex="1">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font></Label>
-                        <Label text="Customer name" GridPane.rowIndex="2">
+                        <Label text="Customer name" textFill="WHITE" GridPane.rowIndex="2">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lbCusName" prefHeight="30.0" prefWidth="244.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label fx:id="lbCusName" prefHeight="30.0" prefWidth="244.0" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="14.0" />
                            </font></Label>
                         <TextField fx:id="txtcusID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Customer date" GridPane.rowIndex="3">
+                        <Label text="Customer date" textFill="WHITE" GridPane.rowIndex="3">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lbCusDate" prefHeight="30.0" prefWidth="239.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <Label fx:id="lbCusDate" prefHeight="30.0" prefWidth="239.0" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font></Label>
                         <Button mnemonicParsing="false" onAction="#getCusInfo" prefHeight="25.0" prefWidth="200.0" text="Search" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
@@ -80,9 +80,9 @@
             </VBox>
             <VBox prefHeight="323.0" prefWidth="386.0">
                <children>
-                  <Label text="Product Information ">
+                  <Label text="Product Information " textFill="WHITE">
                      <font>
-                        <Font size="20.0" />
+                        <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
                   <GridPane hgap="10.0" prefWidth="167.0" vgap="10.0">
@@ -99,28 +99,28 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label text="ID">
+                        <Label text="ID" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label text="Name" GridPane.rowIndex="1">
+                        <Label text="Name" textFill="WHITE" GridPane.rowIndex="1">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
                         <TextField fx:id="txtProductName" editable="false" prefWidth="157.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Price" GridPane.rowIndex="2">
+                        <Label text="Price" textFill="WHITE" GridPane.rowIndex="2">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label text="Discount price" GridPane.rowIndex="3">
+                        <Label text="Discount price" textFill="WHITE" GridPane.rowIndex="3">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label text="Quantity" GridPane.rowIndex="4">
+                        <Label text="Quantity" textFill="WHITE" GridPane.rowIndex="4">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -128,7 +128,7 @@
                         <TextField fx:id="txtProductPrice" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="txtProductDiscountPrice" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextField fx:id="txtQuantity" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="Amount" GridPane.rowIndex="5">
+                        <Label text="Amount" textFill="WHITE" GridPane.rowIndex="5">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -170,13 +170,14 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Total Amount">
+                        <Label text="Total Amount" textFill="WHITE">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
                         <TextField fx:id="txtTotalAmount" editable="false" GridPane.columnIndex="1" />
-                        <Label text="Customer's money" GridPane.rowIndex="1">
+                        <Button fx:id="btnSubmit" mnemonicParsing="false" onAction="#addOrder" text="Checkout" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="Customer's money" textFill="WHITE" GridPane.rowIndex="1">
                            <font>
                               <Font size="16.0" />
                            </font>

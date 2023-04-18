@@ -38,11 +38,11 @@ public class FXMLMainController implements Initializable {
     @FXML private VBox vbScreen;
     @FXML private ToggleButton btnProduct;
     @FXML private ToggleButton btnPurchase;
-    @FXML private HBox branchScreen;
-    @FXML private HBox employeeScreen;
-    @FXML private HBox productScreen;
+    @FXML private VBox branchScreen;
+    @FXML private VBox employeeScreen;
+    @FXML private VBox productScreen;
     @FXML private HBox purchaseScreen;
-    @FXML private HBox customerScreen;
+    @FXML private VBox customerScreen;
     /**
      * Initializes the controller class.
      */

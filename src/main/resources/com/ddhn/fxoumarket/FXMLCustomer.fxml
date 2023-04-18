@@ -10,50 +10,75 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="721.0" prefWidth="1050.0" styleClass="body" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddhn.fxoumarket.FXMLCustomerController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="1050.0" styleClass="body" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddhn.fxoumarket.FXMLCustomerController">
    <children>
-      <VBox prefHeight="721.0" prefWidth="700.0">
+      <VBox prefHeight="436.0" prefWidth="1050.0">
          <children>
-            <GridPane prefHeight="173.0" prefWidth="367.0" styleClass="gp-input">
+            <GridPane prefHeight="98.0" prefWidth="1050.0" styleClass="gp-input">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0" prefWidth="129.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="296.0" minWidth="10.0" prefWidth="238.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.0" minWidth="10.0" prefWidth="150.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="359.0" minWidth="10.0" prefWidth="359.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="296.0" minWidth="10.0" prefWidth="150.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="365.0" minWidth="10.0" prefWidth="365.0" />
               </columnConstraints>
               <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" GridPane.rowIndex="1" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" GridPane.rowIndex="2" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date of birth" GridPane.rowIndex="3" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Personcal ID" />
-                  <TextField fx:id="txtPersonalID" GridPane.columnIndex="1" />
-                  <TextField fx:id="txtName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="txtPhone" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <DatePicker fx:id="dpDate" prefHeight="30.0" prefWidth="249.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Text fill="#f5f5f5" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" textAlignment="CENTER" wrappingWidth="162.8203125" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Text>
+                  <Text fill="#f5f5f5" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" textAlignment="CENTER" wrappingWidth="164.3017578125" GridPane.columnIndex="2">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Text>
+                  <Text fill="#f5f5f5" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of birth" textAlignment="CENTER" wrappingWidth="164.17578125" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Text>
+                  <Text fill="#f5f5f5" strokeType="OUTSIDE" strokeWidth="0.0" text="Personcal ID" textAlignment="CENTER" wrappingWidth="163.888671875">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Text>
+                  <TextField fx:id="txtPersonalID" prefHeight="28.0" prefWidth="290.0" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin></TextField>
+                  <TextField fx:id="txtName" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin></TextField>
+                  <TextField fx:id="txtPhone" prefHeight="28.0" prefWidth="292.0" GridPane.columnIndex="3">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin></TextField>
+                  <DatePicker fx:id="dpDate" prefHeight="30.0" prefWidth="249.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                </children>
             </GridPane>
-            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="hb-select">
+            <HBox alignment="CENTER" prefHeight="51.0" prefWidth="723.0" styleClass="hb-select">
                <children>
-                  <Button mnemonicParsing="false" onAction="#addCustomer" styleClass="btn-select" text="Insert" />
-                  <Button mnemonicParsing="false" onAction="#updateCustomer" styleClass="btn-select" text="Update" />
-                  <Button mnemonicParsing="false" onAction="#deleteCustomer" styleClass="btn-select" text="Delete" />
+                  <Button mnemonicParsing="false" onAction="#addCustomer" prefWidth="90.0" styleClass="btn-select" text="Insert" />
+                  <Button mnemonicParsing="false" onAction="#updateCustomer" prefWidth="90.0" styleClass="btn-select" text="Update" />
+                  <Button mnemonicParsing="false" onAction="#deleteCustomer" prefWidth="90.0" styleClass="btn-select" text="Delete" />
                </children>
+               <VBox.margin>
+                  <Insets right="75.0" />
+               </VBox.margin>
             </HBox>
          </children>
       </VBox>
-      <VBox prefHeight="721.0" prefWidth="987.0">
+      <HBox prefHeight="668.0" prefWidth="1050.0">
          <children>
-            <TableView fx:id="customerTable" onMouseClicked="#getSelected" prefHeight="650.0" prefWidth="654.0" />
+            <TableView fx:id="customerTable" onMouseClicked="#getSelected" prefHeight="537.0" prefWidth="1050.0" />
          </children>
-      </VBox>
+      </HBox>
    </children>
-</HBox>
+</VBox>
