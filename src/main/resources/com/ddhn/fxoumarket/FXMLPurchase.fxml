@@ -183,6 +183,15 @@
                            </font>
                         </Label>
                         <TextField fx:id="txtCustomerMoney" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <Button fx:id="btnSubmit" mnemonicParsing="false" onAction="#addOrder" text="Checkout">
+                                 <HBox.margin>
+                                    <Insets right="30.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children>
                   </GridPane>
                </children>
