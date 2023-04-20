@@ -43,16 +43,13 @@ public class ProductService {
     
     public static int addProduct(Product p) throws SQLException {
         int productId = -1;
-        if (p.getPrice() <= 0 || p.getDiscountPrice() <= 0){
-            return productId;
-        }
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "INSERT INTO product(name, origin, price, discountPrice, active) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setString(1, p.getName());
             stm.setString(2, p.getOrigin());
-            stm.setFloat(3, p.getPrice());
-            stm.setFloat(4, p.getDiscountPrice());
+            stm.setFloat(3, Math.abs(p.getPrice()));
+            stm.setFloat(4, Math.abs(p.getDiscountPrice()));
             stm.setBoolean(5, p.isActive());
             
             stm.executeUpdate();
@@ -72,16 +69,13 @@ public class ProductService {
     }
     
     public static boolean updateProduct(Product p) throws SQLException {
-        if (p.getPrice() <= 0 || p.getDiscountPrice() <= 0){
-            return false;
-        }
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "UPDATE product SET name=?, origin=?, price=?, discountPrice=?, active=? WHERE id=?";
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setString(1, p.getName());
             stm.setString(2, p.getOrigin());
-            stm.setFloat(3, p.getPrice());
-            stm.setFloat(4, p.getDiscountPrice());
+            stm.setFloat(3, Math.abs(p.getPrice()));
+            stm.setFloat(4, Math.abs(p.getDiscountPrice()));
             stm.setBoolean(5, p.isActive());
             stm.setInt(6, p.getId());
             

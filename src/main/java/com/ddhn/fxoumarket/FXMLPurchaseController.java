@@ -37,12 +37,23 @@ import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Pos;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
 import javafx.print.PrinterJob;
+import javafx.scene.Node;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -58,7 +69,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.DateStringConverter;
@@ -106,6 +122,7 @@ public class FXMLPurchaseController implements Initializable {
     private Label lbCusDate;
     @FXML
     private HBox root;
+
     private float voucher = 1.f;
     private boolean checkCus = false;
 
@@ -270,7 +287,6 @@ public class FXMLPurchaseController implements Initializable {
         }
         checkVoucher();
         txtTotalAmount.setText(String.format("%.2f", getTotalAmount() * voucher));       
-
     }
 
     public Cart checkDup(ObservableList<Cart> list, int id) {
@@ -346,9 +362,11 @@ public class FXMLPurchaseController implements Initializable {
 
     }
 
-    
-    
-    
+    /**
+     *
+     * @throws IOException
+     * @throws SQLException
+     */
     public void print() throws IOException, SQLException {
         VBox VbPrint = new VBox(10);
         Employee emp = EmployeeService.getEmpById(currentEmployeeId);
@@ -518,4 +536,5 @@ public class FXMLPurchaseController implements Initializable {
         txtTotalAmount.clear();
         tbProduct.getItems().clear();
     }
+
 }
