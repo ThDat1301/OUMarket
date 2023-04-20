@@ -169,13 +169,15 @@ public class FXMLCustomerController implements Initializable{
                         Alert.AlertType.CONFIRMATION).showAndWait();
                 if(rs.get() == ButtonType.OK)
                 {
-                    CustomerService.addCustomer(new Customer(name, phone, date, personalID));
-                    MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
-                    loadTableView();
-                    txtName.clear();
-                    txtPhone.clear();
-                    txtPersonalID.clear();
-                    dpDate.setValue(null);
+                    if (CustomerService.addCustomer(new Customer(name, phone, date, personalID))){
+                        MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
+                        loadTableView();
+                        txtName.clear();
+                        txtPhone.clear();
+                        txtPersonalID.clear();
+                        dpDate.setValue(null);
+                    } else MessageBox.getBox("Error", "Something went wrong, please try again!", Alert.AlertType.ERROR).show(); 
+                    
                 }
                 
             }
