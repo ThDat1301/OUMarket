@@ -13,16 +13,16 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="1050.0" styleClass="body" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddhn.fxoumarket.FXMLEmployeeController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="1050.0" styleClass="body" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddhn.fxoumarket.FXMLEmployeeController">
    <children>
-      <VBox prefHeight="545.0" prefWidth="1050.0">
+      <VBox prefHeight="563.0" prefWidth="1050.0">
          <children>
-            <GridPane hgap="10.0" styleClass="gp-input" vgap="10.0">
+            <GridPane hgap="10.0" prefHeight="110.0" prefWidth="365.0" styleClass="gp-input" vgap="10.0">
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.0" minWidth="10.0" prefWidth="127.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="329.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="259.0" minWidth="10.0" prefWidth="131.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="476.0" minWidth="10.0" prefWidth="406.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.0" minWidth="10.0" prefWidth="85.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="361.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="259.0" minWidth="10.0" prefWidth="114.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="476.0" minWidth="10.0" prefWidth="402.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -30,39 +30,63 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" textAlignment="CENTER" wrappingWidth="128.8203125">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" wrappingWidth="96.8203125">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Text>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" textAlignment="CENTER" wrappingWidth="129.3017578125" GridPane.rowIndex="1">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" wrappingWidth="93.3017578125" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Text>
-                  <TextField fx:id="txtName" GridPane.columnIndex="1" />
                   <TextField fx:id="txtPhone" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" textAlignment="CENTER" wrappingWidth="134.125" GridPane.columnIndex="2">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="100.125" GridPane.columnIndex="2">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="15.0" />
+                     </GridPane.margin></Text>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" wrappingWidth="99.337890625" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="15.0" />
+                     </GridPane.margin></Text>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Branch" wrappingWidth="93.7177734375" GridPane.rowIndex="2">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Text>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" textAlignment="CENTER" wrappingWidth="132.337890625" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font></Text>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Branch" textAlignment="CENTER" wrappingWidth="129.7177734375" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font></Text>
-                  <TextField fx:id="txtUsername" GridPane.columnIndex="3" />
+                  <TextField fx:id="txtUsername" GridPane.columnIndex="3">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin></TextField>
                   <TextField fx:id="txtPassword" editable="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="cbBranch" prefHeight="30.0" prefWidth="335.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="cbBranch" prefHeight="30.0" prefWidth="389.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtName" prefHeight="28.0" prefWidth="241.0" GridPane.columnIndex="1" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Role" wrappingWidth="100.125" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="15.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <ComboBox fx:id="cbRole" prefHeight="30.0" prefWidth="413.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                </children>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="20.0" />
+               </VBox.margin>
             </GridPane>
-            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="hb-select">
+            <HBox prefHeight="72.0" prefWidth="1030.0" styleClass="hb-select">
                <children>
-                  <Button fx:id="btnInsert" mnemonicParsing="false" onAction="#addEmployee" prefWidth="90.0" styleClass="btn-select" text="Insert" />
-                  <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#updateEmployee" prefWidth="90.0" styleClass="btn-select" text="Update" />
-                  <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteEmployee" prefWidth="90.0" styleClass="btn-select" text="Delete" />
-                  <Button fx:id="showChangePassword" mnemonicParsing="false" onAction="#showChangePassword" prefHeight="31.2" prefWidth="115.0" text="Update password" />
+                  <Button fx:id="btnInsert" mnemonicParsing="false" onAction="#addEmployee" prefWidth="84.0" styleClass="btn-select" text="Insert" />
+                  <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#updateEmployee" prefWidth="84.0" styleClass="btn-select" text="Update" />
+                  <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteEmployee" prefWidth="84.0" styleClass="btn-select" text="Delete" />
+                  <Button fx:id="showChangePassword" mnemonicParsing="false" onAction="#showChangePassword" prefHeight="31.2" prefWidth="120.0" text="Update password">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin></Button>
                </children>
             </HBox>
          </children>
@@ -72,7 +96,7 @@
       </VBox>
       <VBox prefHeight="700.0" prefWidth="700.0">
          <children>
-            <TableView fx:id="employeeTable" onMouseClicked="#getSelected" prefHeight="650.0" prefWidth="640.0" />
+            <TableView fx:id="employeeTable" onMouseClicked="#getSelected" prefHeight="429.0" prefWidth="1050.0" />
          </children>
       </VBox>
    </children>

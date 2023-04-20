@@ -5,19 +5,25 @@
 package com.ddhn.fxoumarket;
 
 import com.ddhn.conf.JdbcUtils;
+import static com.ddhn.fxoumarket.FXMLLoginController.currentEmployeeId;
+import com.ddhn.pojo.Branch;
 import com.ddhn.pojo.Cart;
+import com.ddhn.pojo.Employee;
 import com.ddhn.pojo.Order;
 import com.ddhn.pojo.OrderDetails;
 import com.ddhn.pojo.Product;
+import com.ddhn.services.BranchService;
 import com.ddhn.services.EmployeeService;
 import com.ddhn.services.OrderService;
 import com.ddhn.services.ProductService;
 import com.ddhn.services.CustomerService;
 import com.ddhn.utils.MessageBox;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -28,11 +34,15 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.print.PrinterJob;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -45,7 +55,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.DateStringConverter;
@@ -198,7 +211,7 @@ public class FXMLPurchaseController implements Initializable {
                             Cart data = getTableView().getItems().get(getIndex());
                             tbProduct.getItems().remove(data);
                             checkVoucher();
-                            txtTotalAmount.setText(String.valueOf(getTotalAmount() * voucher));
+                            txtTotalAmount.setText(String.format("%.2f", getTotalAmount() * voucher));
 
                         });
                     }
@@ -256,7 +269,7 @@ public class FXMLPurchaseController implements Initializable {
             tbProduct.getItems().add(item);
         }
         checkVoucher();
-        txtTotalAmount.setText(String.valueOf(getTotalAmount() * voucher));
+        txtTotalAmount.setText(String.format("%.2f", getTotalAmount() * voucher));       
 
     }
 
@@ -278,8 +291,8 @@ public class FXMLPurchaseController implements Initializable {
         return totalAmount;
     }
 
-    public void addOrder(ActionEvent e) throws SQLException {
-        if (tbProduct.getItems().size() < 1){
+    public void addOrder(ActionEvent e) throws SQLException, IOException {
+        if (tbProduct.getItems().size() < 1) {
             MessageBox.getBox("Error", "Please add some product to cart!", Alert.AlertType.ERROR).show();
             return;
         }
@@ -311,10 +324,11 @@ public class FXMLPurchaseController implements Initializable {
                             OrderService.addOrder(new Order(date, totalPrice, moneyCustomer, customerId, employeeId), listOd, checkCus);
                             MessageBox.getBox("Success", "Checkout successfully!!!", Alert.AlertType.INFORMATION).show();
                             checkCus = false;
-                        }
-                        else {
+                            print();
+                        } else {
                             OrderService.addOrder(new Order(date, totalPrice, moneyCustomer, employeeId), listOd, checkCus);
                             MessageBox.getBox("Success", "Checkout successfully!!!", Alert.AlertType.INFORMATION).show();
+                            print();
                         }
                         reset();
                     } else if (result.get() == ButtonType.CANCEL) {
@@ -331,6 +345,120 @@ public class FXMLPurchaseController implements Initializable {
         }
 
     }
+
+    
+    
+    
+    public void print() throws IOException, SQLException {
+        VBox VbPrint = new VBox(10);
+        Employee emp = EmployeeService.getEmpById(currentEmployeeId);
+        Branch br = BranchService.getBranchById(emp.getBranch_id());
+        ObservableList<Cart> listProduct = FXCollections.observableArrayList();
+        for (Cart c : tbProduct.getItems()) {
+            listProduct.add(c);
+        }
+
+        VbPrint.getChildren().add(new Label(br.getAddress()));
+        Label title = new Label("Receipt");
+        title.setStyle("-fx-font-size: 20;");
+        title.setStyle("-fx-font-weight: bold");
+        VbPrint.getChildren().add(title);
+        
+        VbPrint.getChildren().add(new Label("Employee: " + emp.getName()));
+        VbPrint.getChildren().add(new Label("---------------------------------------------------------------------"));
+
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(15);
+        gridPane.setVgap(15);
+        gridPane.setPadding(new Insets(10, 10, 10, 10));
+
+        Label lblName = new Label("Name");
+        Label lblPrice = new Label("Price");
+        Label lblDiscountPrice = new Label("Discount price");
+        Label lblQuantity = new Label("Quantity");
+        Label lblAmount = new Label("Amount");
+        lblName.setStyle("-fx-font-weight: bold");
+        lblPrice.setStyle("-fx-font-weight: bold");
+        lblDiscountPrice.setStyle("-fx-font-weight: bold");
+        lblQuantity.setStyle("-fx-font-weight: bold");
+        lblAmount.setStyle("-fx-font-weight: bold");
+
+        gridPane.add(lblPrice, 0, 0);
+        gridPane.add(lblDiscountPrice, 1, 0);
+        gridPane.add(lblQuantity, 2, 0);
+        gridPane.add(lblAmount, 3, 0);
+
+        int row = 1;
+        for (Cart cart : listProduct) {
+            Label lblNameValue = new Label(cart.getProductName());
+            Label lblPriceValue = new Label(String.valueOf(cart.getProductPrice()));
+            Label lblDiscountPriceValue = new Label(String.valueOf(cart.getProductDiscountPrice()));
+            Label lblQuantityValue = new Label(String.valueOf(cart.getProductQuantity()));
+            Label lblAmountValue = new Label(String.valueOf(cart.getProductAmount()));
+            if(cart.getProductDiscountPrice() < cart.getProductPrice()) {
+                lblPriceValue.setStyle("-fx-strikethrough: true;");
+            }
+            lblNameValue.setMaxWidth(200); 
+            GridPane.setHgrow(lblNameValue, Priority.ALWAYS);      
+            gridPane.add(lblNameValue, 0, row++);
+            gridPane.add(lblPriceValue, 0, row);
+            gridPane.add(lblDiscountPriceValue, 1, row);
+            gridPane.add(lblQuantityValue, 2, row);
+            gridPane.add(lblAmountValue, 3, row);
+            
+            row++;
+        }
+        VbPrint.getChildren().add(gridPane);
+
+        VbPrint.getChildren().add(new Label("---------------------------------------------------------------------"));
+
+        HBox hbTotal = new HBox();
+        Label lbTTotalAmount = new Label("Total Amount: ");
+        Label lbTotalAmount = new Label(String.valueOf(NumberFormat.getInstance().format(Float.parseFloat(txtTotalAmount.getText()))));
+        lbTTotalAmount.setAlignment(Pos.CENTER);
+        lbTTotalAmount.setStyle("-fx-font-weight: bold");
+        lbTTotalAmount.setMaxWidth(500);
+        hbTotal.getChildren().addAll(lbTTotalAmount, lbTotalAmount);
+        hbTotal.setFillHeight(true);
+        HBox.setHgrow(hbTotal.getChildren().get(0), Priority.NEVER);
+        hbTotal.setAlignment(Pos.CENTER);
+        VbPrint.getChildren().add(hbTotal);
+
+        HBox hbCustomerPay = new HBox();
+        Label lbTCustomerPay = new Label("Payment: ");
+        Label lbCustomerPay = new Label(String.valueOf(NumberFormat.getInstance().format(Float.parseFloat(txtCustomerMoney.getText()))));
+        lbTCustomerPay.setAlignment(Pos.CENTER);
+        lbTCustomerPay.setStyle("-fx-font-weight: bold");
+        lbTCustomerPay.setMaxWidth(500);
+        hbCustomerPay.getChildren().addAll(lbTCustomerPay, lbCustomerPay);
+        hbCustomerPay.setFillHeight(true);
+        HBox.setHgrow(hbCustomerPay.getChildren().get(0), Priority.NEVER);
+        hbCustomerPay.setAlignment(Pos.CENTER);
+        VbPrint.getChildren().add(hbCustomerPay);
+
+        HBox hbChange = new HBox();
+        Label lbTChange = new Label("Change: ");
+        Label lbChange = new Label(String.format("%.2f", Float.parseFloat(txtCustomerMoney.getText()) - Float.parseFloat(txtTotalAmount.getText())));
+        lbTChange.setAlignment(Pos.CENTER);
+        lbTChange.setStyle("-fx-font-weight: bold");
+        lbTChange.setMaxWidth(500);
+        hbChange.getChildren().addAll(lbTChange, lbChange);
+        hbChange.setFillHeight(true);
+        HBox.setHgrow(hbChange.getChildren().get(0), Priority.NEVER);
+        VbPrint.getChildren().add(hbChange);
+        hbChange.setAlignment(Pos.CENTER);
+
+        VbPrint.setAlignment(Pos.CENTER);
+
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job != null) {
+            boolean success = job.printPage(VbPrint);
+            if (success) {
+                job.endJob();
+            }
+        }
+    }
+    
 
     public String getLocalDate() {
         LocalDate currentDate = LocalDate.now();
@@ -357,7 +485,7 @@ public class FXMLPurchaseController implements Initializable {
                 lbCusName.setText("");
                 checkCus = false;
             }
-        } catch (NumberFormatException| SQLException ex ) {
+        } catch (NumberFormatException | SQLException ex) {
             MessageBox.getBox("Warning", "Please input correct ID Customer", Alert.AlertType.WARNING).show();
             lbCusDate.setText("");
             lbCusName.setText("");
@@ -365,7 +493,7 @@ public class FXMLPurchaseController implements Initializable {
         }
 
     }
-    
+
     public void checkVoucher() {
         String[] cusDate = this.lbCusDate.getText().split("-");
         String[] date = this.lbDate.getText().split("-");
@@ -380,7 +508,7 @@ public class FXMLPurchaseController implements Initializable {
         }
 
     }
-  
+
     public void reset() {
         txtcusID.clear();
         lbCusDate.setText("");

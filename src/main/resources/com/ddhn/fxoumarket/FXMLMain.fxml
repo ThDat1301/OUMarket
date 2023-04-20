@@ -44,18 +44,18 @@
             </Line>
             <VBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="200.0" styleClass="vb-title">
                <children>
-                  <ToggleButton fx:id="btnBranch" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#showBranch" prefHeight="31.0" prefWidth="182.0" styleClass="btn-select" text="Branchs" textAlignment="CENTER">
+                  <ToggleButton fx:id="btnPurchase" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#showPurchase" prefHeight="31.0" prefWidth="182.0" styleClass="btn-select" text="Purchase" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
                      <toggleGroup>
                         <ToggleGroup fx:id="tgSelect" />
                      </toggleGroup>
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
                   </ToggleButton>
-                  <ToggleButton fx:id="btnEmployee" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#showEmployee" prefHeight="31.0" prefWidth="182.0" styleClass="btn-select" text="Employees" textAlignment="CENTER" toggleGroup="$tgSelect">
+                  <ToggleButton fx:id="tgBtnBranchs" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#showBranch" prefHeight="31.0" prefWidth="182.0" styleClass="btn-select" text="Branchs" textAlignment="CENTER" toggleGroup="$tgSelect">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -63,7 +63,7 @@
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </ToggleButton>
-                  <ToggleButton fx:id="btnProduct" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#showProduct" prefHeight="31.0" prefWidth="182.0" styleClass="btn-select" text="Products" textAlignment="CENTER" toggleGroup="$tgSelect">
+                  <ToggleButton fx:id="tgBtnEmployees" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#showEmployee" prefHeight="31.0" prefWidth="182.0" styleClass="btn-select" text="Employees" textAlignment="CENTER" toggleGroup="$tgSelect">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -71,7 +71,7 @@
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </ToggleButton>
-                  <ToggleButton fx:id="btnPurchase" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#showPurchase" prefHeight="31.0" prefWidth="182.0" styleClass="btn-select" text="Purchase" textAlignment="CENTER" toggleGroup="$tgSelect">
+                  <ToggleButton fx:id="tgBtnProducts" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#showProduct" prefHeight="31.0" prefWidth="182.0" styleClass="btn-select" text="Products" textAlignment="CENTER" toggleGroup="$tgSelect">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -79,7 +79,7 @@
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </ToggleButton>
-                  <ToggleButton alignment="TOP_CENTER" mnemonicParsing="false" onAction="#showCustomer" prefHeight="31.0" prefWidth="182.0" styleClass="btn-select" text="Customer" textAlignment="CENTER" toggleGroup="$tgSelect">
+                  <ToggleButton fx:id="tgBtnCustomers" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#showCustomer" prefHeight="31.0" prefWidth="182.0" styleClass="btn-select" text="Customer" textAlignment="CENTER" toggleGroup="$tgSelect">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -105,15 +105,15 @@
          </children>
       </VBox>
       <VBox fx:id="vbScreen" prefHeight="369.0" prefWidth="1050.0" styleClass="vb-screen">
-         <Label alignment="CENTER" prefHeight="112.0" prefWidth="1051.0" styleClass="bg-white" text="OU MARKET">
+         <Label alignment="CENTER" prefHeight="112.0" prefWidth="1050.0" styleClass="bg-white" text="OU MARKET">
             <font>
                <Font name="System Bold" size="64.0" />
             </font>
          </Label>
-        <fx:include fx:id="branchScreen" source="FXMLBranch.fxml" />
+        <fx:include fx:id="purchaseScreen" source="FXMLPurchase.fxml" /> 
         <fx:include fx:id="employeeScreen" managed="false" source="FXMLEmployee.fxml" visible="false" />
         <fx:include fx:id="productScreen" managed="false" source="FXMLProduct.fxml" visible="false" />
-        <fx:include fx:id="purchaseScreen" managed="false" source="FXMLPurchase.fxml" visible="false" />
+        <fx:include fx:id="branchScreen" managed="false" source="FXMLBranch.fxml" visible="false" />
         <fx:include fx:id="customerScreen" managed="false" source="FXMLCustomer.fxml" visible="false" />
 
 

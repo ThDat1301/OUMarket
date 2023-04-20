@@ -4,6 +4,7 @@
  */
 package com.ddhn.fxoumarket;
 
+import com.ddhn.pojo.Employee;
 import com.ddhn.services.LoginService;
 import java.io.IOException;
 import java.net.URL;
@@ -33,32 +34,68 @@ import javafx.stage.Stage;
  * @author truon
  */
 public class FXMLMainController implements Initializable {
-    @FXML private Label lbBranchName;
-    @FXML private Label lbUsername;
-    @FXML private VBox vbScreen;
-    @FXML private ToggleButton btnProduct;
-    @FXML private ToggleButton btnPurchase;
-    @FXML private VBox branchScreen;
-    @FXML private VBox employeeScreen;
-    @FXML private VBox productScreen;
-    @FXML private HBox purchaseScreen;
-    @FXML private VBox customerScreen;
+
+    @FXML
+    private Label lbBranchName;
+    @FXML
+    private Label lbUsername;
+    @FXML
+    private VBox vbScreen;
+//    @FXML private ToggleButton btnProduct;
+//    @FXML private ToggleButton btnPurchase;
+    @FXML
+    private VBox branchScreen;
+    @FXML
+    private VBox employeeScreen;
+    @FXML
+    private VBox productScreen;
+    @FXML
+    private HBox purchaseScreen;
+    @FXML
+    private VBox customerScreen;
+
+    @FXML
+    private ToggleButton tgBtnBranchs;
+    @FXML
+    private ToggleButton tgBtnEmployees;
+    @FXML
+    private ToggleButton tgBtnProducts;
+    @FXML
+    private ToggleButton tgBtnCustomers;
+
     /**
      * Initializes the controller class.
      */
+    Employee em = new Employee();
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        
-    }    
-    
+    public void initialize(URL url, ResourceBundle rb) {  
+                 
+    }
+    public void getUser(Employee e) {
+        this.em = e;
+        if (em.getRole() == 1) {          
+            tgBtnBranchs.setVisible(true);
+            tgBtnEmployees.setVisible(true);
+            tgBtnProducts.setVisible(true);
+            tgBtnCustomers.setVisible(true);
+        } else {
+            tgBtnBranchs.setVisible(false);
+            tgBtnEmployees.setVisible(false);
+            tgBtnProducts.setVisible(false);
+            tgBtnCustomers.setVisible(false);
+        }
+    }
+
     public void showInformation(String username, String branch) {
         lbUsername.setText(username);
         lbBranchName.setText(branch);
     }
+
     
-    public void logout (ActionEvent e) throws IOException{
-        ((Node)e.getSource()).getScene().getWindow().hide();
+
+    public void logout(ActionEvent e) throws IOException {
+        ((Node) e.getSource()).getScene().getWindow().hide();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLLogin.fxml"));
         Parent root = loader.load();
         Stage stage = new Stage();
@@ -66,12 +103,24 @@ public class FXMLMainController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-    
+
     public void exit(ActionEvent e) {
         Platform.exit();
     }
-    public void showCustomer(ActionEvent e)
-    {
+    public void showPurchase(ActionEvent e) {
+        purchaseScreen.setVisible(true);
+        purchaseScreen.setManaged(true);
+        customerScreen.setVisible(false);
+        customerScreen.setManaged(false);
+        productScreen.setVisible(false);
+        productScreen.setManaged(false);
+        branchScreen.setVisible(false);
+        branchScreen.setManaged(false);
+        employeeScreen.setVisible(false);
+        employeeScreen.setManaged(false);
+    }
+
+    public void showCustomer(ActionEvent e) {
         customerScreen.setVisible(true);
         customerScreen.setManaged(true);
         employeeScreen.setVisible(false);
@@ -83,6 +132,7 @@ public class FXMLMainController implements Initializable {
         purchaseScreen.setVisible(false);
         purchaseScreen.setManaged(false);
     }
+
     public void showEmployee(ActionEvent e) {
         employeeScreen.setVisible(true);
         employeeScreen.setManaged(true);
@@ -94,12 +144,12 @@ public class FXMLMainController implements Initializable {
         productScreen.setManaged(false);
         purchaseScreen.setVisible(false);
         purchaseScreen.setManaged(false);
-        
+
     }
 
     public void showBranch(ActionEvent e) {
         branchScreen.setVisible(true);
-        branchScreen.setManaged(true);      
+        branchScreen.setManaged(true);
         customerScreen.setVisible(false);
         customerScreen.setManaged(false);
         employeeScreen.setVisible(false);
@@ -109,32 +159,17 @@ public class FXMLMainController implements Initializable {
         purchaseScreen.setVisible(false);
         purchaseScreen.setManaged(false);
     }
-    
+
     public void showProduct(ActionEvent e) {
         productScreen.setVisible(true);
         productScreen.setManaged(true);
         customerScreen.setVisible(false);
         customerScreen.setManaged(false);
         branchScreen.setVisible(false);
-        branchScreen.setManaged(false);      
+        branchScreen.setManaged(false);
         employeeScreen.setVisible(false);
         employeeScreen.setManaged(false);
         purchaseScreen.setVisible(false);
         purchaseScreen.setManaged(false);
     }
-    
-    public void showPurchase(ActionEvent e) {
-        purchaseScreen.setVisible(true);
-        purchaseScreen.setManaged(true);
-        customerScreen.setVisible(false);
-        customerScreen.setManaged(false);
-        productScreen.setVisible(false);
-        productScreen.setManaged(false);
-        branchScreen.setVisible(false);
-        branchScreen.setManaged(false);      
-        employeeScreen.setVisible(false);
-        employeeScreen.setManaged(false);
-    }
-    
 }
-    

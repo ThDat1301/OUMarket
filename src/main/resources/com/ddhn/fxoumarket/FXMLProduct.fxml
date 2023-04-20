@@ -14,9 +14,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="627.0" prefWidth="1050.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddhn.fxoumarket.FXMLProductController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="1050.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddhn.fxoumarket.FXMLProductController">
    <children>
-      <VBox prefHeight="500.0" prefWidth="1030.0">
+      <VBox prefHeight="545.0" prefWidth="1030.0">
          <children>
             <GridPane hgap="10.0" prefHeight="110.0" prefWidth="908.0" styleClass="gp-input" vgap="10.0">
                <columnConstraints>
@@ -31,28 +31,34 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" textAlignment="CENTER" wrappingWidth="109.8203125">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" wrappingWidth="109.8203125">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Text>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Origin" textAlignment="CENTER" wrappingWidth="109.8935546875" GridPane.rowIndex="1">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Origin" wrappingWidth="109.8935546875" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Text>
                   <TextField fx:id="txtName" prefHeight="31.0" prefWidth="204.0" GridPane.columnIndex="1" />
                   <TextField fx:id="txtOrigin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Price" textAlignment="CENTER" wrappingWidth="108.791015625" GridPane.rowIndex="2">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Price" wrappingWidth="108.791015625" GridPane.rowIndex="2">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Text>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Discount Price" textAlignment="CENTER" wrappingWidth="168.4658203125" GridPane.columnIndex="2">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Discount Price" wrappingWidth="168.4658203125" GridPane.columnIndex="2">
                      <font>
                         <Font name="System Bold" size="12.0" />
-                     </font></Text>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Available" textAlignment="CENTER" wrappingWidth="169.76953125" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="15.0" />
+                     </GridPane.margin></Text>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Available" wrappingWidth="169.76953125" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Bold" size="12.0" />
-                     </font></Text>
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="15.0" />
+                     </GridPane.margin></Text>
                   <TextField fx:id="txtPrice" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="txtDiscountPrice" prefHeight="28.0" prefWidth="250.0" GridPane.columnIndex="3" />
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
@@ -71,18 +77,21 @@
                      </children>
                   </HBox>
                </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
             </GridPane>
             <HBox prefHeight="80.0" prefWidth="1010.0" styleClass="hb-select">
                <children>
-                  <Button fx:id="btnInsert" mnemonicParsing="false" onAction="#addProduct" prefWidth="90.0" styleClass="btn-select" text="Insert" />
-                  <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#updateProduct" prefWidth="90.0" styleClass="btn-select" text="Update">
+                  <Button fx:id="btnInsert" mnemonicParsing="false" onAction="#addProduct" prefWidth="120.0" styleClass="btn-select" text="Insert" />
+                  <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#updateProduct" prefWidth="120.0" styleClass="btn-select" text="Update">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </Button>
                </children>
                <VBox.margin>
-                  <Insets right="230.0" />
+                  <Insets />
                </VBox.margin>
             </HBox>
          </children>

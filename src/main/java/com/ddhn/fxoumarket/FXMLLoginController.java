@@ -25,6 +25,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 
 /**
  * FXML Controller class
@@ -34,19 +35,27 @@ import javafx.scene.control.TextField;
 public class FXMLLoginController implements Initializable {
     @FXML private TextField txtUsername;
     @FXML private TextField txtPassword;
+    @FXML private ToggleButton tgBtnBranchs;
+    @FXML private ToggleButton tgBtnEmployees;
+    @FXML private ToggleButton tgBtnProducts;
+    @FXML private ToggleButton tgBtnCustomers;
     
     public static int currentEmployeeId;
-     public void loginHandler(ActionEvent e) throws SQLException, IOException {
+    public void loginHandler(ActionEvent e) throws SQLException, IOException {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
+        
         MessageBox.getBox("Test", String.valueOf(LoginService.Login(username, password)), Alert.AlertType.INFORMATION);
-        if (LoginService.Login(username, password) == 1) {
+        if (LoginService.Login(username, password) != null) {
             currentEmployeeId = EmployeeService.getIdByName(username);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLMain.fxml"));
             Parent root = loader.load();
             String branch = LoginService.getBranchByUsername(username);
+            Employee em = LoginService.Login(username, password);
+            
             FXMLMainController mainController = loader.getController();
-            mainController.showInformation(username, branch);
+            mainController.showInformation(username, branch);     
+            mainController.getUser(em);
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);

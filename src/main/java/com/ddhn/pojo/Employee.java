@@ -13,14 +13,28 @@ public class Employee {
     private String username;
     private String password;
     private int branch_id;
+    private int role;
+    
+    public Employee(){
+    }
 
-    public Employee(int id, String name, String phone, String username, String password, int branch_id) {
+    public Employee(int id, String name, String phone, String username, String password, int branch_id, int role) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.username = username;
         this.password = password;
         this.branch_id = branch_id;
+        this.role = role;
+    }
+    
+    public Employee(String name, String phone, String username, String password, int branch_id, int role) {
+        this.name = name;
+        this.phone = phone;
+        this.username = username;
+        this.password = password;
+        this.branch_id = branch_id;
+        this.role = role;
     }
     
     public Employee(String name, String phone, String username, String password, int branch_id) {
@@ -30,6 +44,10 @@ public class Employee {
         this.password = password;
         this.branch_id = branch_id;
     }
+
+//    public Employee() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
     
     /**
      * @return the id
@@ -106,6 +124,20 @@ public class Employee {
      */
     public void setBranch_id(int branch_id) {
         this.branch_id = branch_id;
+    }
+    
+    /**
+     * @return the role
+     */
+    public int getRole() {
+        return role;
+    }
+
+    /**
+     * @param role the branch_id to set
+     */
+    public void setRole(int role) {
+        this.role = role;
     }
 }
 
