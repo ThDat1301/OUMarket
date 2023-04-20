@@ -11,28 +11,54 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import org.apache.commons.codec.digest.DigestUtils;
-
+import com.ddhn.pojo.Employee; 
+        
 /**
  *
  * @author truon
  */
-public class LoginService {
+public class LoginService { 
 
-    public static int Login(String username, String password) throws SQLException {
-        password = DigestUtils.md5Hex(password);
-        try (Connection conn = JdbcUtils.getConn()) {
-            PreparedStatement stm = conn.prepareStatement("SELECT * FROM employee WHERE username= ?");
+//    public static int Login(String username, String password) throws SQLException {
+//        password = DigestUtils.md5Hex(password);
+//        try (Connection conn = JdbcUtils.getConn()) {
+//            PreparedStatement stm = conn.prepareStatement("SELECT * FROM employee WHERE username= ?");
+//            stm.setString(1, username);
+//            ResultSet rs = stm.executeQuery();
+//            if (rs.next()) {
+//                if (rs.getString("username").equals(username) && rs.getString("password").equals(password)) {
+//                    return 1;
+//                }
+//            }
+//        }
+//        return 0;
+//    }
+    public static Employee Login(String username, String password) throws SQLException{
+        password = DigestUtils.md5Hex(password);       
+        try(Connection conn = JdbcUtils.getConn()){
+            PreparedStatement stm = conn.prepareStatement("SELECT * FROM employee WHERE username= ? AND password= ?");
             stm.setString(1, username);
+            stm.setString(2, password);
             ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
-                if (rs.getString("username").equals(username) && rs.getString("password").equals(password)) {
-                    return 1;
+            if(rs.next()){
+                if(rs.getString("username").equals(username) && rs.getString("password").equals(password)){
+                    Employee e = new Employee();
+                    e.setUsername(rs.getString("username"));
+                    e.setPassword(rs.getString("password"));
+                    e.setName(rs.getString("name"));
+                    e.setPhone(rs.getString("phone"));
+                    e.setBranch_id(rs.getInt("branch_id"));
+                    e.setRole(rs.getInt("role"));
+                    return e;
                 }
             }
         }
-        return 0;
+        return null;
     }
-
+            
+            
+            
+            
     public static String getBranchByUsername(String username) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
             Statement stm = conn.createStatement();

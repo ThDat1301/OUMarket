@@ -35,8 +35,8 @@ public class EmployeeService {
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 int branchId = rs.getInt("branch_id");
-                
-                employees.add(new Employee(id, name, phone, username, password, branchId));
+                int role = rs.getInt("role");
+                employees.add(new Employee(id, name, phone, username, password, branchId, role));
             }   
         }
         return employees;
@@ -44,7 +44,7 @@ public class EmployeeService {
     
     public static boolean addEmployee(Employee e) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "INSERT INTO Employee(name, phone, username, password, branch_id) VALUES(?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Employee(name, phone, username, password, branch_id, role) VALUES(?, ?, ?, ?, ?, ?)";
             e.setPassword(e.getPassword());
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setString(1, e.getName());
@@ -52,7 +52,7 @@ public class EmployeeService {
             stm.setString(3, e.getUsername());
             stm.setString(4, e.getPassword());
             stm.setInt(5, e.getBranch_id());      
-            
+            stm.setInt(6, e.getRole());                  
             int r = stm.executeUpdate();
             
             return r > 0;
@@ -65,14 +65,15 @@ public class EmployeeService {
     
     public static boolean updateEmployee(Employee e) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "UPDATE employee SET name = ?, phone = ?, username = ?, password = ?, branch_id = ? WHERE id = ?";
+            String sql = "UPDATE employee SET name = ?, phone = ?, username = ?, password = ?, branch_id = ?, role = ? WHERE id = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setString(1, e.getName());
             stm.setString(2, e.getPhone());
             stm.setString(3, e.getUsername());
             stm.setString(4, e.getPassword());
             stm.setInt(5, e.getBranch_id());  
-            stm.setInt(6, e.getId());
+            stm.setInt(6, e.getRole());  
+            stm.setInt(7, e.getId());
             int r = stm.executeUpdate();   
             return r > 0;
         }
@@ -103,7 +104,7 @@ public class EmployeeService {
     }
     
     public static Employee getEmpById(int idEmpl) throws SQLException {
-        int id = 0, branch_id = 0;
+        int id = 0, branch_id = 0, role = 0;
         String name = null, phone = null, username = null, password = null;
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM employee WHERE id = ?";
@@ -117,9 +118,10 @@ public class EmployeeService {
                 username = rs.getString("username");
                 password = rs.getString("password");
                 branch_id = rs.getInt("branch_id");
+                role = rs.getInt("role");
             }
         }
-        return new Employee(id, name, phone, username, password, branch_id);
+        return new Employee(id, name, phone, username, password, branch_id, role);
     } 
 
     public static String getBranchByUsername(String username) {

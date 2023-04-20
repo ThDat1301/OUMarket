@@ -19,8 +19,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,15 +32,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import org.apache.commons.codec.digest.DigestUtils;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -48,36 +48,25 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class FXMLEmployeeController implements Initializable {
 
-    @FXML
-    private TableView<Employee> employeeTable;
-    @FXML
-    private TableColumn<Employee, Integer> idCol;
-    @FXML
-    private TableColumn<Employee, String> nameCol;
-    @FXML
-    private TableColumn<Employee, String> phoneCol;
-    @FXML
-    private TableColumn<Employee, String> usernameCol;
-    @FXML
-    private TableColumn<Employee, String> passwordCol;
-    @FXML
-    private TableColumn<Employee, Integer> branchIdCol;
-    @FXML
-    private TextField txtName;
-    @FXML
-    private TextField txtPhone;
-    @FXML
-    private TextField txtUsername;
-    @FXML
-    private TextField txtPassword;
-    @FXML
-    private ComboBox<Branch> cbBranch;
-    @FXML
-    private Button btnInsert;
-    @FXML
-    private Button btnUpdate;
-    @FXML
-    private Button btnDelete;
+    @FXML private TableView<Employee> employeeTable;
+    @FXML private TableColumn<Employee, Integer> idCol;
+    @FXML private TableColumn<Employee, String> nameCol;
+    @FXML private TableColumn<Employee, String> phoneCol;
+    @FXML private TableColumn<Employee, String> usernameCol;
+    @FXML private TableColumn<Employee, String> passwordCol;
+    @FXML private TableColumn<Employee, Integer> branchIdCol;
+    @FXML private TableColumn<Employee, Integer> roleCol;
+    @FXML private TextField txtName;
+    @FXML private TextField txtPhone;
+    @FXML private TextField txtUsername;
+    @FXML private TextField txtPassword;
+    @FXML private ComboBox<Branch> cbBranch;
+    @FXML private ComboBox<String> cbRole;
+    @FXML private Button btnInsert;
+    @FXML private Button btnUpdate;
+    @FXML private Button btnDelete;
+//    @FXML private TextField txtRole;
+            
 
     int index = -1;
     
@@ -99,6 +88,8 @@ public class FXMLEmployeeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             renewTable();
+            this.cbRole.getItems().addAll("admin", "user");
+
         } catch (SQLException ex) {
             Logger.getLogger(FXMLEmployeeController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -113,19 +104,41 @@ public class FXMLEmployeeController implements Initializable {
         usernameCol = new TableColumn("Username");
         passwordCol = new TableColumn("Password");
         branchIdCol = new TableColumn("Branch ID");
+        roleCol  = new TableColumn("Role");
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
         usernameCol.setCellValueFactory(new PropertyValueFactory<>("username"));
         passwordCol.setCellValueFactory(new PropertyValueFactory<>("password"));
-        branchIdCol.setCellValueFactory(new PropertyValueFactory<>("branch_id"));
+        branchIdCol.setCellValueFactory(new PropertyValueFactory<>("branch_id"));  
+        
+        Callback<TableColumn<Employee, Integer>, TableCell<Employee, Integer>> roleCellFactory = new Callback<TableColumn<Employee, Integer>, TableCell<Employee, Integer>>() {
+        @Override
+        public TableCell<Employee, Integer> call(TableColumn<Employee, Integer> param) {
+            return new TableCell<Employee, Integer>() {
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                    setText(null);
+                } else {
+                    setText(item == 0 ? "user" : "admin");
+                        }
+                    }
+                };
+            }
+        };
+        roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
+        roleCol.setCellFactory(roleCellFactory);
 
-        this.employeeTable.getColumns().addAll(idCol,nameCol,phoneCol,usernameCol,passwordCol,branchIdCol);        
+        
+        this.employeeTable.getColumns().addAll(idCol,nameCol,phoneCol,usernameCol,passwordCol,branchIdCol, roleCol);        
         List<Employee> employee = EmployeeService.getEmployees();        
         this.employeeTable.setItems(FXCollections.observableArrayList(employee));
         
         List<Branch> branchList = BranchService.getBranchs();
         cbBranch.setItems(FXCollections.observableList(branchList));
+        
     }
     @FXML
     public void getSelected(MouseEvent e) throws SQLException {
@@ -137,9 +150,12 @@ public class FXMLEmployeeController implements Initializable {
         txtPhone.setText(phoneCol.getCellData(index));
         txtUsername.setText(usernameCol.getCellData(index));
         txtPassword.setText(passwordCol.getCellData(index));
-
         int branchId = Integer.parseInt(String.valueOf(employeeTable.getItems().get(index).getBranch_id()));
         cbBranch.setValue(BranchService.getBranchById(branchId));
+        
+//        cbRole.setValue(roleCol.getCellData(index));
+        String role = roleCol.getCellData(index) == 1 ? "admin" : "user";
+        cbRole.setValue(role);
 
     }
 
@@ -151,7 +167,7 @@ public class FXMLEmployeeController implements Initializable {
         } else {
             try (Connection conn = JdbcUtils.getConn()) {
                 String name, phone, username, password;
-                int id, branchId;
+                int id, branchId, role;
 
                 name = txtName.getText();
                 phone = txtPhone.getText();
@@ -159,10 +175,15 @@ public class FXMLEmployeeController implements Initializable {
                 password = txtPassword.getText();
                 id = Integer.parseInt(String.valueOf(employeeTable.getItems().get(index).getId()));
                 branchId = cbBranch.getSelectionModel().getSelectedItem().getId();
+                int num = 0;
+                if(cbRole.getSelectionModel().getSelectedItem() == "admin"){
+                    num = 1;
+                }
+                role = num;
                 Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to update this field?",
                         Alert.AlertType.CONFIRMATION).showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    EmployeeService.updateEmployee(new Employee(id, name, phone, username, password, branchId));
+                    EmployeeService.updateEmployee(new Employee(id, name, phone, username, password, branchId, role));
                     MessageBox.getBox("Success", "Updated successfully!!!", Alert.AlertType.INFORMATION).show();
                     renewTable();
                 } else if (result.get() == ButtonType.CANCEL) {
@@ -228,17 +249,21 @@ public class FXMLEmployeeController implements Initializable {
         } else {
             try (Connection conn = JdbcUtils.getConn()) {
                 String name, phone, username, password;
-                int branchId;
+                int branchId, num = 0, role;
 
                 name = txtName.getText();
                 phone = txtPhone.getText();
                 username = txtUsername.getText();
                 password = txtPassword.getText();
                 branchId = cbBranch.getSelectionModel().getSelectedItem().getId();
+                if(cbRole.getSelectionModel().getSelectedItem() == "admin"){
+                    num = 1;
+                }
+                role = num;
                 Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to insert new employee?",
                         Alert.AlertType.CONFIRMATION).showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    if (EmployeeService.addEmployee(new Employee(name, phone, username, password, branchId))) {
+                    if (EmployeeService.addEmployee(new Employee(name, phone, username, password, branchId, role))) {
                         MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
                         renewTable();
                         txtName.clear();
