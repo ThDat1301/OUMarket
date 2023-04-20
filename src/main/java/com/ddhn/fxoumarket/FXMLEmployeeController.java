@@ -11,6 +11,7 @@ import com.ddhn.pojo.Product;
 import com.ddhn.services.BranchService;
 import com.ddhn.services.EmployeeService;
 import com.ddhn.services.ProductService;
+import com.ddhn.utils.Function;
 import com.ddhn.utils.MessageBox;
 import java.io.IOException;
 import java.net.URL;
@@ -95,6 +96,12 @@ public class FXMLEmployeeController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(FXMLEmployeeController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.txtPhone.textProperty().addListener(e -> {
+            if(!Function.isNumber(txtPhone.getText()))
+            {
+                txtPhone.setText("1");
+            }
+        });
     }
     
     public void loadBranch() throws SQLException {

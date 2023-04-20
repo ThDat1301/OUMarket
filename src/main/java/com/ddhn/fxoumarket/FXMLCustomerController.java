@@ -9,6 +9,7 @@ import com.ddhn.utils.MessageBox;
 import com.ddhn.pojo.Customer;
 import com.ddhn.services.CustomerService;
 import com.ddhn.services.EmployeeService;
+import com.ddhn.utils.Function;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
@@ -96,6 +97,19 @@ public class FXMLCustomerController implements Initializable{
             }
         };
         dpDate.setConverter(converter);
+        
+        this.txtPhone.textProperty().addListener(e -> {
+            
+            if(!Function.isNumber(txtPhone.getText())){
+                txtPhone.setText("1");
+            }
+        });
+        this.txtPersonalID.textProperty().addListener(e -> {
+            
+            if(!Function.isNumber(txtPersonalID.getText())){
+                txtPersonalID.setText("1");
+            }
+        });
     }
     
     private void loadTableView() throws SQLException
