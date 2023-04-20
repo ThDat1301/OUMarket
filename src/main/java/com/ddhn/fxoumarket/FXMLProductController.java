@@ -7,6 +7,7 @@ package com.ddhn.fxoumarket;
 import com.ddhn.conf.JdbcUtils;
 import com.ddhn.pojo.Product;
 import com.ddhn.services.ProductService;
+import com.ddhn.utils.Function;
 import com.ddhn.utils.MessageBox;
 import java.net.URL;
 import java.sql.Connection;
@@ -36,27 +37,45 @@ import javafx.scene.control.cell.PropertyValueFactory;
  *
  * @author truon
  */
-
 public class FXMLProductController implements Initializable {
-    @FXML private TextField txtName;
-    @FXML private TextField txtOrigin;
-    @FXML private TextField txtPrice;
-    @FXML private TextField txtDiscountPrice;
-    @FXML private RadioButton rdAvaiYes;
-    @FXML private RadioButton rdAvaiNo;
-    @FXML private Button btnInsert;
-    @FXML private Button btnUpdate;
-    @FXML private Button btnDelete;
-    @FXML private TableView tbProduct;
-    @FXML private TableColumn<Product, Integer> colId;
-    @FXML private TableColumn<Product, String> colName;
-    @FXML private TableColumn<Product, String> colOrigin;
-    @FXML private TableColumn<Product, Float> colPrice;
-    @FXML private TableColumn<Product, Float> colDiscountPrice;
-    @FXML private TableColumn<Product, Boolean> colActive;
-    @FXML private ToggleGroup tgAvai;
+
+    @FXML
+    private TextField txtName;
+    @FXML
+    private TextField txtOrigin;
+    @FXML
+    private TextField txtPrice;
+    @FXML
+    private TextField txtDiscountPrice;
+    @FXML
+    private RadioButton rdAvaiYes;
+    @FXML
+    private RadioButton rdAvaiNo;
+    @FXML
+    private Button btnInsert;
+    @FXML
+    private Button btnUpdate;
+    @FXML
+    private Button btnDelete;
+    @FXML
+    private TableView tbProduct;
+    @FXML
+    private TableColumn<Product, Integer> colId;
+    @FXML
+    private TableColumn<Product, String> colName;
+    @FXML
+    private TableColumn<Product, String> colOrigin;
+    @FXML
+    private TableColumn<Product, Float> colPrice;
+    @FXML
+    private TableColumn<Product, Float> colDiscountPrice;
+    @FXML
+    private TableColumn<Product, Boolean> colActive;
+    @FXML
+    private ToggleGroup tgAvai;
 
     int index = -1;
+
     /**
      * Initializes the controller class.
      */
@@ -67,8 +86,18 @@ public class FXMLProductController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(FXMLProductController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
-    
+        this.txtPrice.textProperty().addListener(e -> {
+            if (!Function.isNumber(txtPrice.getText())) {
+                txtPrice.setText("1");
+            }
+        });
+        this.txtDiscountPrice.textProperty().addListener(e -> {
+            if (!Function.isNumber(txtDiscountPrice.getText())) {
+                txtDiscountPrice.setText("1");
+            }
+        });
+    }
+
     private void clearInput() {
         txtName.clear();
         txtOrigin.clear();
@@ -76,7 +105,7 @@ public class FXMLProductController implements Initializable {
         txtDiscountPrice.clear();
         rdAvaiYes.setSelected(true);
     }
-    
+
     public void renewTable() throws SQLException {
         this.tbProduct.getItems().clear();
         this.tbProduct.getColumns().clear();
@@ -86,15 +115,15 @@ public class FXMLProductController implements Initializable {
         colPrice = new TableColumn("Price");
         colDiscountPrice = new TableColumn("Discount Price");
         colActive = new TableColumn("Active");
-        
+
         colId.setCellValueFactory(new PropertyValueFactory<Product, Integer>("id"));
         colName.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
         colOrigin.setCellValueFactory(new PropertyValueFactory<Product, String>("origin"));
         colPrice.setCellValueFactory(new PropertyValueFactory<Product, Float>("price"));
         colDiscountPrice.setCellValueFactory(new PropertyValueFactory<Product, Float>("discountPrice"));
         colActive.setCellValueFactory(new PropertyValueFactory<Product, Boolean>("active"));
-        
-        this.tbProduct.getColumns().addAll(colId, 
+
+        this.tbProduct.getColumns().addAll(colId,
                 colName,
                 colOrigin,
                 colPrice,
@@ -102,7 +131,7 @@ public class FXMLProductController implements Initializable {
                 colActive);
         List<Product> p = ProductService.getProducts();
         this.tbProduct.setItems(FXCollections.observableArrayList(p));
-        
+
 //        ObservableList<Product> products = null;
 //        try {
 //            products = FXCollections.observableArrayList(ProductService.getProducts());
@@ -112,7 +141,7 @@ public class FXMLProductController implements Initializable {
 //        
 //        tbProduct.setItems(products);
     }
-    
+
     public void getSelected() {
         index = tbProduct.getSelectionModel().getSelectedIndex();
         if (index <= -1) {
@@ -122,58 +151,58 @@ public class FXMLProductController implements Initializable {
         txtOrigin.setText(colOrigin.getCellData(index));
         txtPrice.setText(colPrice.getCellData(index).toString());
         txtDiscountPrice.setText(colDiscountPrice.getCellData(index).toString());
-        if (colActive.getCellData(index) == true) 
+        if (colActive.getCellData(index) == true) {
             rdAvaiYes.setSelected(true);
-        else rdAvaiNo.setSelected(true);
-    }
-    
-    public void addProduct(ActionEvent e) throws SQLException {
-        if(txtName.getText().trim().isEmpty() || txtOrigin.getText().trim().isEmpty() ||
-                txtPrice.getText().trim().isEmpty() || tgAvai.getSelectedToggle() == null) {
-            MessageBox.getBox("Error", "Please complete all fields before insert!!!", Alert.AlertType.ERROR).show();
+        } else {
+            rdAvaiNo.setSelected(true);
         }
-        else {
+    }
+
+    public void addProduct(ActionEvent e) throws SQLException {
+        if (txtName.getText().trim().isEmpty() || txtOrigin.getText().trim().isEmpty()
+                || txtPrice.getText().trim().isEmpty() || tgAvai.getSelectedToggle() == null) {
+            MessageBox.getBox("Error", "Please complete all fields before insert!!!", Alert.AlertType.ERROR).show();
+        } else {
             try (Connection conn = JdbcUtils.getConn()) {
                 String name, origin;
                 float price, discountPrice;
                 boolean active;
-                
+
                 name = txtName.getText();
                 origin = txtOrigin.getText();
                 price = Float.parseFloat(txtPrice.getText());
                 discountPrice = Float.parseFloat(txtDiscountPrice.getText());
                 active = rdAvaiYes.isSelected();
-                    
+
                 Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to insert new product?",
                         Alert.AlertType.CONFIRMATION).showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    if (ProductService.addProduct(new Product(name, origin, price, discountPrice, active))!= -1) {
+                    if (ProductService.addProduct(new Product(name, origin, price, discountPrice, active)) != -1) {
                         MessageBox.getBox("Success", "Inserted successfully!!!", Alert.AlertType.INFORMATION).show();
                         renewTable();
                         clearInput();
+                    } else {
+                        MessageBox.getBox("Error", "Something went wrong, please try again!", Alert.AlertType.ERROR).show();
                     }
-                    else MessageBox.getBox("Error", "Something went wrong, please try again!", Alert.AlertType.ERROR).show();
-                    
-                }
-                else if (result.get() == ButtonType.CANCEL) {
+
+                } else if (result.get() == ButtonType.CANCEL) {
 
                 }
             }
         }
     }
-    
+
     public void updateProduct(ActionEvent e) throws SQLException {
-        if(txtName.getText().trim().isEmpty() || txtOrigin.getText().trim().isEmpty() ||
-                txtPrice.getText().trim().isEmpty() || tgAvai.getSelectedToggle() == null) {
+        if (txtName.getText().trim().isEmpty() || txtOrigin.getText().trim().isEmpty()
+                || txtPrice.getText().trim().isEmpty() || tgAvai.getSelectedToggle() == null) {
             MessageBox.getBox("Error", "Please complete all fields before update!!!", Alert.AlertType.ERROR).show();
-        }
-        else {
+        } else {
             try (Connection conn = JdbcUtils.getConn()) {
                 String name, origin;
                 float price, discountPrice;
                 boolean active;
                 int id;
-                
+
                 name = txtName.getText();
                 origin = txtOrigin.getText();
                 price = Float.parseFloat(txtPrice.getText());
@@ -182,22 +211,21 @@ public class FXMLProductController implements Initializable {
 
                 Product p = (Product) tbProduct.getItems().get(index);
                 id = p.getId();
-                                    
+
                 Optional<ButtonType> result = MessageBox.getBox("Confirm", "Are you sure to update this field?",
                         Alert.AlertType.CONFIRMATION).showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    ProductService.updateProduct(new Product(id ,name, origin, price, discountPrice, active));
+                    ProductService.updateProduct(new Product(id, name, origin, price, discountPrice, active));
                     MessageBox.getBox("Success", "Updated successfully!!!", Alert.AlertType.INFORMATION).show();
                     renewTable();
                     clearInput();
-                }
-                else if (result.get() == ButtonType.CANCEL) {
+                } else if (result.get() == ButtonType.CANCEL) {
 
                 }
             }
         }
     }
-    
+
 //    public void deleteProduct(ActionEvent e) throws SQLException {
 //        try (Connection conn = JdbcUtils.getConn()) {
 //            Product p = (Product) tbProduct.getItems().get(index);

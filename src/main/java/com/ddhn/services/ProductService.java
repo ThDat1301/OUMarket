@@ -41,6 +41,26 @@ public class ProductService {
         return products;
     }
     
+    public static List<Product> getActiveProducts() throws SQLException {
+        List<Product> products = new ArrayList<>();
+        
+        try (Connection conn = JdbcUtils.getConn()) {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM product WHERE active = 1");
+            while(rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String origin = rs.getString("origin");
+                float price = rs.getFloat("price");
+                float discountPrice = rs.getFloat("discountPrice");
+                boolean active = rs.getBoolean("active");
+                
+                products.add(new Product(id, name, origin, price, discountPrice, active));
+            }
+        }
+        return products;
+    }
+    
     public static int addProduct(Product p) throws SQLException {
         int productId = -1;
         try (Connection conn = JdbcUtils.getConn()) {

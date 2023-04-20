@@ -68,7 +68,7 @@ public class EmployeeTester {
     
     @Test
     public void testUpdateEmployee() {
-        Employee e = new Employee(15,"TesterUpdate", "0123456789", "test1", "test123", 5);
+        Employee e = new Employee(18, "Tester1", "123", "abc", "123", 2, 0);
         try {
             boolean actual = EmployeeService.updateEmployee(e);
             Assertions.assertTrue(actual);
@@ -79,9 +79,8 @@ public class EmployeeTester {
             ResultSet rs = stm.executeQuery();
 
             Assertions.assertNotNull(rs.next());
-            Assertions.assertEquals("TesterUpdate", rs.getString("name"));
-            Assertions.assertEquals("0123456789", rs.getString("phone"));
-            Assertions.assertEquals("test1", rs.getString("username"));
+            Assertions.assertEquals("Tester1", rs.getString("name"));
+            Assertions.assertEquals(2, rs.getInt("branch_id"));
             
         } catch (SQLException ex) {
             Logger.getLogger(EmployeeTester.class.getName()).log(Level.SEVERE, null, ex);

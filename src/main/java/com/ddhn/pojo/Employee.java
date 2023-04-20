@@ -7,6 +7,7 @@ package com.ddhn.pojo;
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class Employee {
+
     private int id;
     private String name;
     private String phone;
@@ -14,8 +15,15 @@ public class Employee {
     private String password;
     private int branch_id;
     private int role;
-    
-    public Employee(){
+
+    public Employee() {
+        id = 0;
+        name = "";
+        phone = "";
+        username = "";
+        password = "";
+        branch_id = 0;
+        role = 0;
     }
 
     public Employee(int id, String name, String phone, String username, String password, int branch_id, int role) {
@@ -27,7 +35,7 @@ public class Employee {
         this.branch_id = branch_id;
         this.role = role;
     }
-    
+
     public Employee(String name, String phone, String username, String password, int branch_id, int role) {
         this.name = name;
         this.phone = phone;
@@ -36,7 +44,7 @@ public class Employee {
         this.branch_id = branch_id;
         this.role = role;
     }
-    
+
     public Employee(String name, String phone, String username, String password, int branch_id) {
         this.name = name;
         this.phone = phone;
@@ -48,7 +56,6 @@ public class Employee {
 //    public Employee() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 //    }
-    
     /**
      * @return the id
      */
@@ -125,7 +132,7 @@ public class Employee {
     public void setBranch_id(int branch_id) {
         this.branch_id = branch_id;
     }
-    
+
     /**
      * @return the role
      */
@@ -140,5 +147,3 @@ public class Employee {
         this.role = role;
     }
 }
-
-

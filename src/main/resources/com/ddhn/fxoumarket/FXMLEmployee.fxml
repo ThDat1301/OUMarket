@@ -62,7 +62,16 @@
                         <Insets />
                      </GridPane.margin></TextField>
                   <TextField fx:id="txtPassword" editable="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="cbBranch" prefHeight="30.0" prefWidth="389.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <ComboBox fx:id="cbBranch" prefHeight="30.0" prefWidth="389.0" />
+                        <Button mnemonicParsing="false" onAction="#loadBranch" prefHeight="36.0" prefWidth="191.0" styleClass="btn-select" text="Refresh">
+                           <padding>
+                              <Insets right="10.0" top="10.0" />
+                           </padding>
+                        </Button>
+                     </children>
+                  </HBox>
                   <TextField fx:id="txtName" prefHeight="28.0" prefWidth="241.0" GridPane.columnIndex="1" />
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Role" wrappingWidth="100.125" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <font>
@@ -80,7 +89,6 @@
             </GridPane>
             <HBox prefHeight="72.0" prefWidth="1030.0" styleClass="hb-select">
                <children>
-                  <Button fx:id="btnInsert" mnemonicParsing="false" onAction="#addEmployee" prefWidth="84.0" styleClass="btn-select" text="Insert" />
                   <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#updateEmployee" prefWidth="84.0" styleClass="btn-select" text="Update" />
                   <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteEmployee" prefWidth="84.0" styleClass="btn-select" text="Delete" />
                   <Button fx:id="showChangePassword" mnemonicParsing="false" onAction="#showChangePassword" prefHeight="31.2" prefWidth="120.0" text="Update password">

@@ -17,6 +17,7 @@ import com.ddhn.services.EmployeeService;
 import com.ddhn.services.OrderService;
 import com.ddhn.services.ProductService;
 import com.ddhn.services.CustomerService;
+import com.ddhn.utils.Function;
 import com.ddhn.utils.MessageBox;
 import java.io.IOException;
 import java.net.URL;
@@ -158,7 +159,7 @@ public class FXMLPurchaseController implements Initializable {
 
     public void loadProduct() throws SQLException {
 
-        List<Product> list = ProductService.getProducts();
+        List<Product> list = ProductService.getActiveProducts();
         cbProduct.setItems(FXCollections.observableList(list));
     }
 
@@ -176,9 +177,9 @@ public class FXMLPurchaseController implements Initializable {
         txtProductPrice.setText(String.valueOf(price));
         txtProductDiscountPrice.setText(String.valueOf(discountPrice));
         if (discountPrice != 0) {
-            txtAmmount.setText(String.valueOf(discountPrice * quantity));
+            txtAmmount.setText(String.format("%.2f",discountPrice * quantity));
         } else {
-            txtAmmount.setText(String.valueOf(price * quantity));
+            txtAmmount.setText(String.format("%.2f",price * quantity));
         }
 
     }
@@ -254,13 +255,16 @@ public class FXMLPurchaseController implements Initializable {
     }
 
     private void onChangeQuantity() {
+        if (!Function.isNumber(txtQuantity.getText())) {
+            txtQuantity.setText("1");
+        }
         float price = Float.parseFloat(txtProductPrice.getText());
         float discountPrice = Float.parseFloat(txtProductDiscountPrice.getText());
-        int quantity = Integer.parseInt(txtQuantity.getText());
+        float quantity = Float.parseFloat(txtQuantity.getText());
         if (discountPrice != 0) {
-            txtAmmount.setText(String.valueOf(discountPrice * quantity));
+            txtAmmount.setText(String.format("%.2f", discountPrice * quantity));
         } else {
-            txtAmmount.setText(String.valueOf(price * quantity));
+            txtAmmount.setText(String.format("%.2f", price * quantity));
         }
     }
 

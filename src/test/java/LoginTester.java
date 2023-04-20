@@ -1,5 +1,6 @@
 
 import com.ddhn.conf.JdbcUtils;
+import com.ddhn.pojo.Employee;
 //import com.ddhn.pojo.Customer;
 import com.ddhn.services.LoginService;
 import com.ddhn.services.EmployeeService;
@@ -13,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -49,12 +51,9 @@ public class LoginTester {
     
     @Test
     public void testLogin() throws SQLException {
-        String username = "minhduc";
-        String password = "ducprotc123";
-        int expected = 1;
-        
-        int actual = LoginService.Login(username, password);
-        Assertions.assertEquals(expected, actual);
+        Employee e = new Employee("Le Minh Duc", "0123457893", "minhduc", "ducprotc123", 6, 1);
+        Employee actual = LoginService.Login(e.getUsername(), e.getPassword());
+        Assertions.assertEquals(e.getUsername(), actual.getUsername());
     }
     
     @Test
@@ -65,5 +64,4 @@ public class LoginTester {
         String actual = LoginService.getBranchByUsername(username);
         Assertions.assertEquals(expected, actual);
     }
-    
 }

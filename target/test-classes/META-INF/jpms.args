@@ -1,0 +1,4 @@
+--patch-module
+com.ddhn.fxoumarket=_
+--add-reads
+com.ddhn.fxoumarket=ALL-UNNAMED

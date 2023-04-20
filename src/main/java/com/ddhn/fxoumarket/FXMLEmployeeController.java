@@ -7,8 +7,10 @@ package com.ddhn.fxoumarket;
 import com.ddhn.conf.JdbcUtils;
 import com.ddhn.pojo.Branch;
 import com.ddhn.pojo.Employee;
+import com.ddhn.pojo.Product;
 import com.ddhn.services.BranchService;
 import com.ddhn.services.EmployeeService;
+import com.ddhn.services.ProductService;
 import com.ddhn.utils.MessageBox;
 import java.io.IOException;
 import java.net.URL;
@@ -93,6 +95,12 @@ public class FXMLEmployeeController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(FXMLEmployeeController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void loadBranch() throws SQLException {
+
+        List<Branch> list = BranchService.getBranchs();
+        cbBranch.setItems(FXCollections.observableList(list));
     }
 
     public void renewTable() throws SQLException {
@@ -255,7 +263,7 @@ public class FXMLEmployeeController implements Initializable {
                 phone = txtPhone.getText();
                 username = txtUsername.getText();
                 password = txtPassword.getText();
-                branchId = cbBranch.getSelectionModel().getSelectedItem().getId();
+                branchId = cbBranch.getSelectionModel().getSelectedItem() != null ? cbBranch.getSelectionModel().getSelectedItem().getId(): 1;
                 if(cbRole.getSelectionModel().getSelectedItem() == "admin"){
                     num = 1;
                 }
