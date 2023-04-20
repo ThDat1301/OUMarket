@@ -143,6 +143,11 @@ public class FXMLPurchaseController implements Initializable {
             Logger.getLogger(FXMLPurchaseController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        this.txtcusID.textProperty().addListener(e -> {
+            if(!Function.isNumber(txtcusID.getText())){
+                txtcusID.setText("1");
+            }
+        });
         this.txtQuantity.textProperty().addListener(e -> {
             onChangeQuantity();
         });

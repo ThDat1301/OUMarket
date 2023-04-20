@@ -44,7 +44,7 @@
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Text>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Personcal ID" wrappingWidth="163.888671875">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal ID" wrappingWidth="163.888671875">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Text>
@@ -73,7 +73,7 @@
                   <Button mnemonicParsing="false" onAction="#deleteCustomer" prefWidth="112.0" styleClass="btn-select" text="Delete" />
                </children>
                <VBox.margin>
-                  <Insets right="9.0" />
+                  <Insets right="20.0" />
                </VBox.margin>
             </HBox>
          </children>

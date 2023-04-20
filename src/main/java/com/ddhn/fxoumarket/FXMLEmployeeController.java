@@ -70,9 +70,9 @@ public class FXMLEmployeeController implements Initializable {
     @FXML private Button btnDelete;
 //    @FXML private TextField txtRole;
             
-
     int index = -1;
-    
+    boolean checkClear = true;
+
     private int empId;
     
     public void setEmplId(int id) {
@@ -99,7 +99,7 @@ public class FXMLEmployeeController implements Initializable {
         this.txtPhone.textProperty().addListener(e -> {
             if(!Function.isNumber(txtPhone.getText()))
             {
-                txtPhone.setText("1");
+                txtPhone.setText("0");
             }
         });
     }
@@ -171,7 +171,7 @@ public class FXMLEmployeeController implements Initializable {
 //        cbRole.setValue(roleCol.getCellData(index));
         String role = roleCol.getCellData(index) == 1 ? "admin" : "user";
         cbRole.setValue(role);
-
+        checkClear = false;
     }
 
     public void updateEmployee(ActionEvent e) throws SQLException {
@@ -201,6 +201,13 @@ public class FXMLEmployeeController implements Initializable {
                     EmployeeService.updateEmployee(new Employee(id, name, phone, username, password, branchId, role));
                     MessageBox.getBox("Success", "Updated successfully!!!", Alert.AlertType.INFORMATION).show();
                     renewTable();
+                    txtName.clear();
+                    txtPhone.clear();
+                    txtUsername.clear();
+                    txtPassword.clear();
+                    cbBranch.getSelectionModel().selectFirst();
+                    checkClear = false;
+
                 } else if (result.get() == ButtonType.CANCEL) {
 
                 }
@@ -261,11 +268,16 @@ public class FXMLEmployeeController implements Initializable {
                 || txtUsername.getText().trim().isEmpty()) {
             MessageBox.getBox("Error", "Please complete all fields before insert!!!", Alert.AlertType.ERROR).show();
 
-        } else {
+        }
+        else if (!checkClear){
+            MessageBox.getBox("Warning", "Please clear password to continue!", Alert.AlertType.WARNING).show();
+        }
+        else {
             try (Connection conn = JdbcUtils.getConn()) {
                 String name, phone, username, password;
                 int branchId, num = 0, role;
 
+                txtPassword.clear();
                 name = txtName.getText();
                 phone = txtPhone.getText();
                 username = txtUsername.getText();
@@ -286,6 +298,8 @@ public class FXMLEmployeeController implements Initializable {
                         txtUsername.clear();
                         txtPassword.clear();
                         cbBranch.getSelectionModel().selectFirst();
+                        checkClear = false;
+
                     } else MessageBox.getBox("Error", "Something went wrong, please try again!", Alert.AlertType.ERROR).show();
                 } else if (result.get() == ButtonType.CANCEL) {
 
@@ -293,5 +307,10 @@ public class FXMLEmployeeController implements Initializable {
             }
         }
 
+    }
+    
+    public void clearPassword(){
+        txtPassword.clear();
+        checkClear = true;
     }
 }

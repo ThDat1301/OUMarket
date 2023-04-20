@@ -28,7 +28,7 @@ CREATE TABLE `branch` (
   `address` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +57,7 @@ CREATE TABLE `customer` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `personalID_UNIQUE` (`personalID`),
   UNIQUE KEY `phone_UNIQUE` (`phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'Lê Minh Đức','0366004732','2002-04-06','352598749'),(2,'Trương Trọng Nghĩa','0123456789','2002-04-18','0123456879');
+INSERT INTO `customer` VALUES (1,'Le Minh Duc','0366004732','2002-04-06','352598749'),(2,'Truong Trong Nghia','0123456789','2002-06-18','0123456879'),(20,'Tran Nhat Tien','0938192389','2000-04-13','2051052039'),(21,'Mai Thi Tuyet Trinh','0912838912','2002-09-26','2051052010'),(22,'Tran Nhat Minh','0912838934','2002-04-11','2051052093'),(23,'Tran Quoc Hy','098798314','2023-04-08','205129084');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,9 +87,10 @@ CREATE TABLE `employee` (
   `role` int NOT NULL,
   PRIMARY KEY (`id`,`branch_id`),
   UNIQUE KEY `username_UNIQUE` (`username`),
+  UNIQUE KEY `phone_UNIQUE` (`phone`),
   KEY `branch_employee` (`branch_id`),
   CONSTRAINT `branch_employee` FOREIGN KEY (`branch_id`) REFERENCES `branch` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +99,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES (1,'Truong Thanh Dat','0123456789','thdat','996009f2374006606f4c0b0fda878af1',12,0),(2,'Le Minh Duc','0123457893','minhduc','a47e177c35b15f15387bfb234f661ea7',6,1),(3,'Tran Quoc Hy','0123124124','qhy','202cb962ac59075b964b07152d234b70',5,0),(13,'Truong Trong Nghia','01234567899','trongnghia','996009f2374006606f4c0b0fda878af1',12,0),(16,'Tester','123','test','202cb962ac59075b964b07152d234b70',2,0);
+INSERT INTO `employee` VALUES (1,'Truong Thanh Dat','0123456789','thdat','996009f2374006606f4c0b0fda878af1',2,0),(2,'Le Minh Duc','0123457893','minhduc','a47e177c35b15f15387bfb234f661ea7',6,1),(3,'Tran Quoc Hy','0123124124','qhy','202cb962ac59075b964b07152d234b70',5,0),(13,'Truong Trong Nghia','01234567899','trongnghia','996009f2374006606f4c0b0fda878af1',12,0),(25,'Tran Nhat Tien','01234567891','nhatien','aa6b301bf6588d671e31b4e8d8046d5f',2,0);
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +122,7 @@ CREATE TABLE `order` (
   KEY `order_cus_idx` (`customer_id`),
   CONSTRAINT `order_cus` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
   CONSTRAINT `order_emp` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +131,6 @@ CREATE TABLE `order` (
 
 LOCK TABLES `order` WRITE;
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` VALUES (1,'2023-03-25',250,500,NULL,1),(2,'2023-03-26',260,300,NULL,2),(3,'2020-03-02',20,30,NULL,3),(4,'2020-02-02',2,3,NULL,1),(5,'2023-03-23',12,22,NULL,1),(6,'2023-03-23',1487,2000,NULL,1),(7,'2023-03-01',45.6,50,NULL,3),(8,'2023-03-22',15.1,17,NULL,1),(9,'2023-03-01',13,14,NULL,1),(10,'2023-02-28',4.1,5,NULL,1),(11,'2023-03-16',17.45,20,NULL,1),(12,'2023-03-25',392.2,400,NULL,3),(13,'2023-04-08',243.6,2000,NULL,1),(14,'2023-03-25',2000,20000,NULL,1),(15,'2023-04-01',122,444,NULL,1),(16,'2023-04-03',57,60,NULL,2),(17,'2023-04-03',121.7,122,NULL,2),(19,'2023-04-03',137,140,1,2),(20,'2023-04-03',180,181,NULL,2),(21,'2023-04-03',204.8,205,6,2),(22,'2023-04-03',1230,1230,6,2),(23,'2023-04-03',132,133,NULL,2),(24,'2023-04-04',6.6,7,NULL,2);
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,7 +151,7 @@ CREATE TABLE `order_detail` (
   KEY `orderDetail_order_idx` (`order_id`),
   CONSTRAINT `orderDetail_order` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`),
   CONSTRAINT `orderDetail_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +160,6 @@ CREATE TABLE `order_detail` (
 
 LOCK TABLES `order_detail` WRITE;
 /*!40000 ALTER TABLE `order_detail` DISABLE KEYS */;
-INSERT INTO `order_detail` VALUES (5,100,12,22),(6,12,12,23),(7,1,13,16),(8,4,13,17),(9,1,13,5),(10,155,13,18),(11,1,14,32),(12,122,15,33),(13,10,16,1),(14,1,17,15),(15,10,17,5),(16,10,19,1),(17,10,19,2),(18,100,20,15),(19,10,20,16),(20,112,21,15),(21,11,21,16),(22,1,21,17),(23,100,22,1),(24,100,22,4),(25,11,23,5),(26,1,24,4);
 /*!40000 ALTER TABLE `order_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -180,7 +179,7 @@ CREATE TABLE `product` (
   `active` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -202,4 +201,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-20 12:26:55
+-- Dump completed on 2023-04-20 22:50:28

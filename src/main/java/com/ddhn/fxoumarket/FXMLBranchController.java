@@ -56,6 +56,8 @@ public class FXMLBranchController implements Initializable {
     int index = -1;
 
     public void loadTableView() throws SQLException {
+        this.branchTable.getItems().clear();
+        this.branchTable.getColumns().clear();
         idCol = new TableColumn("ID");
         idCol.setId("headerID");
         idCol.setCellValueFactory(new PropertyValueFactory("id"));
@@ -71,7 +73,6 @@ public class FXMLBranchController implements Initializable {
 
         this.branchTable.getColumns().addAll(idCol, nameCol, addressCol);
         List<Branch> branch = BranchService.getBranchs();
-        this.branchTable.getItems().clear();
         this.branchTable.setItems(FXCollections.observableList(branch));
     }
 //    public void renewTable() {

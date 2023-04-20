@@ -99,21 +99,21 @@ public class FXMLCustomerController implements Initializable{
         dpDate.setConverter(converter);
         
         this.txtPhone.textProperty().addListener(e -> {
-            
             if(!Function.isNumber(txtPhone.getText())){
-                txtPhone.setText("1");
+                txtPhone.setText("0");
             }
         });
         this.txtPersonalID.textProperty().addListener(e -> {
-            
             if(!Function.isNumber(txtPersonalID.getText())){
-                txtPersonalID.setText("1");
+                txtPersonalID.setText("0");
             }
         });
     }
     
     private void loadTableView() throws SQLException
     {
+        this.customerTable.getItems().clear();
+        this.customerTable.getColumns().clear();
         TableColumn colID = new TableColumn("ID");
         colID.setCellValueFactory(new PropertyValueFactory("CusId"));
         colID.setPrefWidth(50);
