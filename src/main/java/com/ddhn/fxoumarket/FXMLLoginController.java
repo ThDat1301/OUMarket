@@ -42,7 +42,7 @@ public class FXMLLoginController implements Initializable {
     
     public static int currentEmployeeId;
     public void loginHandler(ActionEvent e) throws SQLException, IOException {
-        String username = txtUsername.getText();
+        String username = txtUsername.getText().trim();
         String password = txtPassword.getText();
         
         MessageBox.getBox("Test", String.valueOf(LoginService.Login(username, password)), Alert.AlertType.INFORMATION);

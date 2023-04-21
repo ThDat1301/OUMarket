@@ -61,8 +61,9 @@ public class LoginService {
             
     public static String getBranchByUsername(String username) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT b.name FROM oumarketdb.employee as e, oumarketdb.branch as b WHERE e.branch_id = b.id AND e.username =\"" + username + "\"");
+            PreparedStatement stm = conn.prepareStatement("SELECT b.name FROM oumarketdb.employee as e, oumarketdb.branch as b WHERE e.branch_id = b.id AND e.username = ?");
+            stm.setString(1, username);
+            ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 return rs.getString("name");
             }

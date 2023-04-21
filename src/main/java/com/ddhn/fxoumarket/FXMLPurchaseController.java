@@ -151,6 +151,11 @@ public class FXMLPurchaseController implements Initializable {
         this.txtQuantity.textProperty().addListener(e -> {
             onChangeQuantity();
         });
+       this.txtCustomerMoney.textProperty().addListener(e -> {
+            if(!Function.isNumber(txtCustomerMoney.getText())){
+                txtCustomerMoney.setText("1");
+            }
+        });
 
         this.cbProduct.setOnAction(e -> {
             try {
@@ -441,7 +446,7 @@ public class FXMLPurchaseController implements Initializable {
 
         HBox hbTotal = new HBox();
         Label lbTTotalAmount = new Label("Total Amount: ");
-        Label lbTotalAmount = new Label(String.valueOf(NumberFormat.getInstance().format(Float.parseFloat(txtTotalAmount.getText()))));
+        Label lbTotalAmount = new Label(String.valueOf(NumberFormat.getInstance().format(Float.parseFloat(txtTotalAmount.getText()))) + "$");
         lbTTotalAmount.setAlignment(Pos.CENTER);
         lbTTotalAmount.setStyle("-fx-font-weight: bold");
         lbTTotalAmount.setMaxWidth(500);
@@ -453,7 +458,7 @@ public class FXMLPurchaseController implements Initializable {
 
         HBox hbCustomerPay = new HBox();
         Label lbTCustomerPay = new Label("Payment: ");
-        Label lbCustomerPay = new Label(String.valueOf(NumberFormat.getInstance().format(Float.parseFloat(txtCustomerMoney.getText()))));
+        Label lbCustomerPay = new Label(String.valueOf(NumberFormat.getInstance().format(Float.parseFloat(txtCustomerMoney.getText()))) + "$");
         lbTCustomerPay.setAlignment(Pos.CENTER);
         lbTCustomerPay.setStyle("-fx-font-weight: bold");
         lbTCustomerPay.setMaxWidth(500);
@@ -465,7 +470,7 @@ public class FXMLPurchaseController implements Initializable {
 
         HBox hbChange = new HBox();
         Label lbTChange = new Label("Change: ");
-        Label lbChange = new Label(String.format("%.2f", Float.parseFloat(txtCustomerMoney.getText()) - Float.parseFloat(txtTotalAmount.getText())));
+        Label lbChange = new Label(String.format("%.2f", Float.parseFloat(txtCustomerMoney.getText()) - Float.parseFloat(txtTotalAmount.getText())) + "$");
         lbTChange.setAlignment(Pos.CENTER);
         lbTChange.setStyle("-fx-font-weight: bold");
         lbTChange.setMaxWidth(500);
